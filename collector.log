@@ -1,0 +1,4 @@
+2026-10-06 15:41:46,999 INFO starting: series=['KXNFLGAME', 'KXNFLSPREAD', 'KXNFLTOTAL'] interval=300s rps=5 auth=off
+2026-10-06 15:43:52,929 INFO starting: series=['KXNFLGAME', 'KXNFLSPREAD', 'KXNFLTOTAL'] interval=300s rps=5 auth=off
+2026-10-06 15:44:11,890 INFO starting: series=['KXNFLGAME', 'KXNFLSPREAD', 'KXNFLTOTAL'] interval=300s rps=5 auth=off
+2026-10-06 15:46:28,536 INFO pass 20261006T224411Z: 678 markets, 0 errors, 136.6s -> raw_snapshots/2026-10-06/pass_224411.jsonl
