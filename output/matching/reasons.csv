@@ -1,0 +1,10 @@
+status,meaning
+game_not_at_provider,Sportsbook data has no game with these two teams near this kickoff
+no_snapshot_near_time,No sportsbook snapshot inside the window for this snapshot time
+book_did_not_post_market,This book had no line of this market type at that snapshot
+different_number,"The book's line is a different number (books post one main line, Kalshi many)"
+kalshi_market_not_open_yet,The Kalshi market was created after the sportsbook snapshot
+no_kalshi_trade_near_time,"Same bet, but no Kalshi trade close enough in time"
+matched,Matched
+book_line_whole_number,Book line is a whole number; Kalshi only lists half points
+no_kalshi_market_at_number,Kalshi had no market at the book's number

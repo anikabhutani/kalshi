@@ -1,0 +1,8 @@
+type,price_group,pairs,book_cost_per_10_vs_own,kalshi_cost_per_10_vs_own,book_cost_per_10_vs_pinnacle,kalshi_cost_per_10_vs_pinnacle,kalshi_fee_per_10,kalshi_cheaper_vs_pinnacle_share
+Point spread,Toss-up (40 to 60¢),1054,0.449,0.43,0.282,0.43,0.332,0.357
+Total points,Toss-up (40 to 60¢),1127,0.449,0.43,0.346,0.434,0.332,0.412
+Who wins,Big longshot (under 20¢),55,0.391,0.266,0.369,0.306,0.562,0.636
+Who wins,Underdog (20 to 40¢),431,0.388,0.387,0.296,0.396,0.448,0.36
+Who wins,Toss-up (40 to 60¢),486,0.384,0.425,0.293,0.428,0.332,0.333
+Who wins,Favorite (60 to 80¢),431,0.388,0.387,0.339,0.362,0.219,0.573
+Who wins,Big favorite (80¢ and up),55,0.391,0.266,0.358,0.271,0.104,0.727

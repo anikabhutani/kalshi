@@ -1,0 +1,10 @@
+type,book,pairs,book_cost_per_10_vs_own,kalshi_cost_per_10_vs_own,book_cost_per_10_vs_pinnacle,kalshi_cost_per_10_vs_pinnacle,kalshi_fee_per_10,kalshi_cheaper_vs_pinnacle_share
+Point spread,Pinnacle,298,0.238,0.43,0.238,0.43,0.335,0.077
+Point spread,FanDuel,418,0.454,0.43,0.454,0.43,0.332,0.546
+Point spread,DraftKings,338,0.449,0.431,0.454,0.43,0.335,0.538
+Total points,Pinnacle,224,0.282,0.43,0.282,0.434,0.335,0.161
+Total points,FanDuel,454,0.454,0.43,0.454,0.434,0.332,0.54
+Total points,DraftKings,449,0.454,0.43,0.449,0.434,0.332,0.59
+Who wins,Pinnacle,486,0.285,0.407,0.285,0.384,0.332,0.263
+Who wins,FanDuel,486,0.387,0.407,0.393,0.384,0.332,0.506
+Who wins,DraftKings,486,0.409,0.407,0.412,0.384,0.332,0.545

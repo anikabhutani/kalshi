@@ -1,0 +1,4 @@
+type,total,match_rate,book_did_not_post_market,different_number,matched,no_kalshi_trade_near_time,no_snapshot_near_time
+Point spread,25740,0.02055167055167055,124,19271,529,2,5814
+Total points,18975,0.03072463768115942,76,14090,583,5,4221
+Who wins,1890,0.7714285714285715,12,0,1458,0,420
