@@ -16,113 +16,113 @@
   {
     "id": "every_game_accounted",
     "title": "Every game is matched or has a reason code",
-    "status": "warn",
-    "detail": "{'matched': 65, 'no_kalshi_event': 15}",
+    "status": "pass",
+    "detail": "{'matched': 80}",
     "guards": "Games silently dropped from the comparison."
   },
   {
     "id": "one_to_one",
     "title": "Each game has its own two Kalshi markets, one per team",
     "status": "pass",
-    "detail": "65 matched games; 0 Kalshi events used twice; 0 without two distinct markets; 0 markets whose ticker team is not the team they are filed under.",
+    "detail": "80 matched games; 0 Kalshi events used twice; 0 without two distinct markets; 0 markets whose ticker team is not the team they are filed under.",
     "guards": "Two games sharing one Kalshi event, or a market filed under the wrong team."
   },
   {
     "id": "ticker_dates",
     "title": "Ticker dates match kickoff dates (Eastern)",
     "status": "pass",
-    "detail": "All 65 ticker dates equal the Eastern kickoff date.",
+    "detail": "All 80 ticker dates equal the Eastern kickoff date.",
     "guards": "Joining on UTC dates, which puts night games on the wrong day."
   },
   {
     "id": "unknown_codes",
     "title": "Every Kalshi team code is in the table",
     "status": "pass",
-    "detail": "All codes in 78 Kalshi events are known.",
+    "detail": "All codes in 121 Kalshi events are known.",
     "guards": "Games left unmatched because of a code spelled differently."
   },
   {
     "id": "kalshi_leftover",
     "title": "Kalshi events not matched to a game",
     "status": "pass",
-    "detail": "13 Kalshi events unmatched; 0 of them dated inside the season's game dates (listed in kalshi_events_unmatched.csv).",
+    "detail": "41 Kalshi events unmatched; 0 of them dated inside the season's game dates (listed in kalshi_events_unmatched.csv).",
     "guards": "Real games missing from the sportsbook side or mis-parsed tickers."
   },
   {
     "id": "no_lookahead",
     "title": "No price from after its checkpoint",
     "status": "pass",
-    "detail": "2,600 prices; 0 timestamped after their checkpoint; 0 negative ages; checkpoints all 0-24 h before their kickoff.",
+    "detail": "3,200 prices; 0 timestamped after their checkpoint; 0 negative ages; checkpoints all 0-24 h before their kickoff.",
     "guards": "Look-ahead: using a price that did not exist yet at that moment."
   },
   {
     "id": "asof_recompute",
     "title": "Snapshot prices recomputed independently",
     "status": "pass",
-    "detail": "All 2,600 rows re-found by scanning every candle and line (no merge_asof); 0 differ.",
+    "detail": "All 3,200 rows re-found by scanning every candle and line (no merge_asof); 0 differ.",
     "guards": "Errors in the merge_asof join (wrong key, wrong direction, unsorted input)."
   },
   {
     "id": "complete_grid",
     "title": "Every game x team x checkpoint x source present",
     "status": "pass",
-    "detail": "2,600 rows, expected 2,600; 0 duplicates; rows without a price: DraftKings 0 of 650, FanDuel 0 of 650, Kalshi 0 of 650, Pinnacle 0 of 650",
+    "detail": "3,200 rows, expected 3,200; 0 duplicates; rows without a price: DraftKings 0 of 800, FanDuel 0 of 800, Kalshi 0 of 800, Pinnacle 0 of 800",
     "guards": "Rows silently missing or doubled."
   },
   {
     "id": "kalshi_complement",
     "title": "Kalshi prices for the two teams add up to about $1",
     "status": "pass",
-    "detail": "325 game checkpoints; 0 where home mid + away mid is outside 0.85-1.15 (median sum 1.000).",
+    "detail": "400 game checkpoints; 0 where home mid + away mid is outside 0.85-1.15 (median sum 1.000).",
     "guards": "Two markets from different games filed as one game."
   },
   {
     "id": "team_alignment",
     "title": "Kalshi and sportsbooks agree on which team is which",
     "status": "pass",
-    "detail": "65 games compared at kickoff; 0 fit better with the teams swapped.",
+    "detail": "80 games compared at kickoff; 0 fit better with the teams swapped.",
     "guards": "A Kalshi market attached to the opposing team (prices would look wildly off)."
   },
   {
     "id": "book_prices",
     "title": "Sportsbook prices are the team's own line",
     "status": "pass",
-    "detail": "1,950 sportsbook prices; implied probability recomputed exactly (worst 0.0e+00); each was looked up by the team's own name.",
+    "detail": "2,400 sportsbook prices; implied probability recomputed exactly (worst 0.0e+00); each was looked up by the team's own name.",
     "guards": "Using the opponent's price or a wrong conversion."
   },
   {
     "id": "price_ages",
     "title": "Price ages recorded",
     "status": "warn",
-    "detail": "45% of sportsbook prices are more than an hour old at their checkpoint. Median ages: Kalshi 3h: 0.5 min; Pinnacle 3h: 64.4 min; Kalshi 1h: 0.5 min; Pinnacle 1h: 8.2 min; Kalshi 15m: 0.5 min; Pinnacle 15m: 52.2 min. Costs only use prices within the maximum age (costs.MAX_AGE_MIN); older ones are marked not usable, so checkpoints with few fresh snapshots have few costs.",
+    "detail": "46% of sportsbook prices are more than an hour old at their checkpoint. Median ages: Kalshi 3h: 0.4 min; Pinnacle 3h: 66.9 min; Kalshi 1h: 0.4 min; Pinnacle 1h: 9.7 min; Kalshi 15m: 0.4 min; Pinnacle 15m: 52.5 min. Costs only use prices within the maximum age (costs.MAX_AGE_MIN); older ones are marked not usable, so checkpoints with few fresh snapshots have few costs.",
     "guards": "Comparing a Kalshi price from one minute ago with a sportsbook price from this morning."
   },
   {
     "id": "cost_grid",
     "title": "Every game x team x checkpoint x venue x ruler (x n) once",
     "status": "pass",
-    "detail": "20800 rows, expected 20800 (65 games x 2 teams x 5 checkpoints x 4 rulers x (5 Kalshi sizes + 3 books)); 0 duplicates.",
+    "detail": "19200 rows, expected 19200 (80 games x 2 teams x 5 checkpoints x 4 rulers x (3 Kalshi sizes + 3 books)); 0 duplicates.",
     "guards": "A combination dropped or counted twice."
   },
   {
     "id": "ruler_sums",
     "title": "Each ruler's two fair chances add up to 100%",
     "status": "pass",
-    "detail": "Largest gap 2.22e-16 over 1300 game-checkpoint-rulers.",
+    "detail": "Largest gap 2.22e-16 over 1600 game-checkpoint-rulers.",
     "guards": "Margin not fully removed, or the two teams swapped between rulers."
   },
   {
     "id": "cost_recompute",
     "title": "Cost per $10 recomputed independently from the snapshots",
     "status": "pass",
-    "detail": "13186 usable rows recomputed with exact fractions, a closed-form Shin and the fee rounded up to the cent; 0 differ.",
+    "detail": "11808 usable rows recomputed with exact fractions, a closed-form Shin and the fee rounded up to the cent; 0 differ.",
     "guards": "Wrong fee, wrong de-vig, wrong team's price, or the price/fair the wrong way round."
   },
   {
     "id": "own_margin_positive",
     "title": "Each sportsbook costs more than its own fair price",
     "status": "pass",
-    "detail": "0 of 1104 own-ruler sportsbook rows are negative.",
+    "detail": "0 of 1344 own-ruler sportsbook rows are negative.",
     "guards": "De-vig adding margin instead of removing it."
   },
   {
@@ -143,14 +143,14 @@
     "id": "freshness_rule",
     "title": "No sportsbook price older than the maximum age is used",
     "status": "pass",
-    "detail": "0 usable rows break it. Usable: 13186 of 20800; max ages (min): 24h 360, 3h 45, 1h 15, 15m 10, close 60.",
+    "detail": "0 usable rows break it. Usable: 11808 of 19200; max ages (min): 24h 360, 3h 45, 1h 15, 15m 10, close 60.",
     "guards": "A morning sportsbook price compared with a Kalshi price from a minute before kickoff."
   },
   {
     "id": "n_values",
     "title": "n values are real trade sizes",
-    "status": "warn",
-    "detail": "Using the team's placeholder sizes 1, 5, 10, 25, 100: run make trade-sizes for this season, then re-run.",
+    "status": "pass",
+    "detail": "From trade_sizes_2026.json, KXNFLGAME.",
     "guards": "Costs for order sizes nobody trades."
   }
 ]
