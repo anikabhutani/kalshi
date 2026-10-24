@@ -20,3 +20,4 @@ frontend/dist/
 .DS_Store
 data/task4/
 data/alignment/
+data/*.zip

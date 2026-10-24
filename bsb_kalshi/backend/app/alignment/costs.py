@@ -24,9 +24,10 @@ Price paid:
   are 1-minute candles (best bid/ask), not the order book, so a large order is assumed to fill
   at the best ask.
 
-n values: the median, p75 and p90 Kalshi trade sizes (contracts per trade, block trades
-excluded) from ``data/alignment/trade_sizes_<season>.json``. Until that file exists, the team's
-placeholder sizes are used and every row says so (``n_source``).
+n values: the median, p75 and p90 Kalshi game-winner trade sizes (contracts per trade, block
+trades excluded) from ``data/alignment/trade_sizes_<season>.json``; a season without its own file uses
+the other season's sizes, and without either the team's placeholder sizes. Every row says which
+(``n_source``).
 
 Freshness (fixed rule): a sportsbook price is only used when it is at most ``MAX_AGE_MIN`` old at
 the checkpoint (from the team's time windows). Kalshi candles are only written when the quote
@@ -68,13 +69,24 @@ def fee_dollars(n: int, price: float) -> float:
 
 
 def n_values(season: int, folder: Path) -> tuple[list[tuple[str, int]], str]:
-    """[(label, n), ...] and where they came from."""
-    path = folder / f"trade_sizes_{season}.json"
-    if path.exists():
-        stats = json.loads(path.read_text())["stats"]["all NFL markets"]["excluding block trades"]["per_trade"]
+    """[(label, n), ...] and where they came from.
+
+    The season's own trade sizes if they exist, otherwise another season's (the same sizes for
+    both seasons keeps them comparable), otherwise the team's placeholder sizes.
+    """
+    for s in [season, *sorted({2025, 2026} - {season}, key=lambda x: abs(x - season))]:
+        path = folder / f"trade_sizes_{s}.json"
+        if not path.exists():
+            continue
+        allstats = json.loads(path.read_text())["stats"]
+        # costs are for game-winner bets, so game-winner trade sizes when the file has them
+        group = "KXNFLGAME" if allstats.get("KXNFLGAME", {}).get("excluding block trades", {}).get("trades") \
+            else "all NFL markets"
+        stats = allstats[group]["excluding block trades"]["per_trade"]
         if all(stats.get(k) for k in ("p50", "p75", "p90")):
+            src = f"trade_sizes_{s}.json, {group}" + ("" if s == season else f" ({s} sizes used for {season})")
             return ([("median", max(1, math.ceil(stats["p50"]))), ("p75", max(1, math.ceil(stats["p75"]))),
-                     ("p90", max(1, math.ceil(stats["p90"])))], f"trade_sizes_{season}.json")
+                     ("p90", max(1, math.ceil(stats["p90"])))], src)
     return [(f"placeholder {n}", n) for n in PLACEHOLDER_N], "placeholder (run make trade-sizes)"
 
 

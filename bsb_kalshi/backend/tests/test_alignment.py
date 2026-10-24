@@ -300,13 +300,20 @@ def test_season_market_selection(tmp_path):
         {"ticker": "KXNFLSPREAD-26SEP20MINCHI-CHI3", "event_ticker": "KXNFLSPREAD-26SEP20MINCHI"},
         {"ticker": "KXNFLGAME-26JAN11BUFJAC-BUF", "event_ticker": "KXNFLGAME-26JAN11BUFJAC"},  # 2025 playoffs
         {"ticker": "KXNFLGAME-26OCT25MINCHI-CHI", "event_ticker": "KXNFLGAME-26OCT25MINCHI"},  # not played yet
+        {"ticker": "KXNFLGAME-26AUG22DALARI-ARI", "event_ticker": "KXNFLGAME-26AUG22DALARI"},  # preseason
+        {"ticker": "KXNFLGAME-26SEP05DALARI-ARI", "event_ticker": "KXNFLGAME-26SEP05DALARI"},  # preseason
+        {"ticker": "KXNFLGAME-25JUL31LACDET-LAC", "event_ticker": "KXNFLGAME-25JUL31LACDET"},  # Hall of Fame game
+        {"ticker": "KXNFLGAME-25AUG30KCLAC-KC", "event_ticker": "KXNFLGAME-25AUG30KCLAC"},  # preseason
+        {"ticker": "KXNFLGAME-25SEP04DALPHI-PHI", "event_ticker": "KXNFLGAME-25SEP04DALPHI"},  # 2025 opener
+        {"ticker": "KXNFLGAME-26FEB08SEANE-SEA", "event_ticker": "KXNFLGAME-26FEB08SEANE"},  # Super Bowl
     ])
     from datetime import date
 
     m26 = ts.season_markets(2026, db=tmp_path / "nfl_costs.db", today=date(2026, 10, 21))
     m25 = ts.season_markets(2025, db=tmp_path / "nfl_costs.db", today=date(2026, 10, 21))
     assert set(m26["ticker"]) == {"KXNFLGAME-26SEP20MINCHI-CHI", "KXNFLSPREAD-26SEP20MINCHI-CHI3"}
-    assert set(m25["ticker"]) == {"KXNFLGAME-26JAN11BUFJAC-BUF"}
+    assert set(m25["ticker"]) == {"KXNFLGAME-26JAN11BUFJAC-BUF", "KXNFLGAME-25SEP04DALPHI-PHI",
+                                  "KXNFLGAME-26FEB08SEANE-SEA"}
 
 
 def test_trade_endpoints_exist_in_the_spec(spec):
@@ -450,9 +457,19 @@ def test_real_trade_sizes_are_used(env):
     (folder / "trade_sizes_2026.json").write_text(json.dumps(
         {"stats": {"all NFL markets": {"excluding block trades": {"per_trade": pt}}}}))
     n, src = cm.n_values(2026, folder)
-    assert n == [("median", 12), ("p75", 41), ("p90", 150)] and src == "trade_sizes_2026.json"
+    assert n == [("median", 12), ("p75", 41), ("p90", 150)] and src == "trade_sizes_2026.json, all NFL markets"
+    n25, src25 = cm.n_values(2025, folder)  # 2025 has no file of its own: uses 2026's, and says so
+    assert n25 == n and src25 == "trade_sizes_2026.json, all NFL markets (2026 sizes used for 2025)"
+    # with game-winner stats in the file, those are used (the costs are for game-winner bets)
+    game = {"p50": 3.0, "p75": 9.2, "p90": 30.0}
+    (folder / "trade_sizes_2026.json").write_text(json.dumps({"stats": {
+        "all NFL markets": {"excluding block trades": {"per_trade": pt, "trades": 9}},
+        "KXNFLGAME": {"excluding block trades": {"per_trade": game, "trades": 5}}}}))
+    n, src = cm.n_values(2026, folder)
+    assert n == [("median", 3), ("p75", 10), ("p90", 30)] and src == "trade_sizes_2026.json, KXNFLGAME"
+    assert cm.n_values(2026, tmp / "empty")[1].startswith("placeholder")
     p = _run_parts(snaps_path, db, 2026)
     p["costs"] = pl.compute_costs(p["snap"], 2026, folder)
     st = _status(p)
     assert st["n_values"] == "pass" and st["cost_grid"] == "pass" and st["cost_recompute"] == "pass"
-    assert set(p["costs"].loc[p["costs"].venue == "Kalshi", "n"]) == {12, 41, 150}
+    assert set(p["costs"].loc[p["costs"].venue == "Kalshi", "n"]) == {3, 10, 30}

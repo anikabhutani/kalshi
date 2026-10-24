@@ -40,7 +40,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from app.task4.common import EASTERN, REPO_ROOT
+from app.task4.common import EASTERN, REPO_ROOT, season_start
 
 TASK3_DB = REPO_ROOT / "data" / "task3" / "nfl_costs.db"
 OUT_DIR = REPO_ROOT / "data" / "alignment"
@@ -70,8 +70,12 @@ def market_date(ticker: str) -> tuple[str, date] | None:
         return None
 
 
-def season_of(d: date) -> int:
-    return d.year if d.month >= 8 else d.year - 1
+def season_of(d: date) -> int | None:
+    """NFL season of a game date: regular season and playoffs only. Preseason (August, early
+    September before week 1) and the Hall of Fame game are None, so their trades are left out."""
+    if d.month >= 8:
+        return d.year if d >= season_start(d.year) else None
+    return d.year - 1 if d.month <= 2 else None
 
 
 def season_markets(season: int, db: Path = TASK3_DB, series: tuple[str, ...] = SERIES,

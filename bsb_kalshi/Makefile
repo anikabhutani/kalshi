@@ -35,7 +35,7 @@ sportsbook: sportsbook-backfill sportsbook-report
 
 # Alignment (Kalshi vs sportsbooks, same games and moments). SEASON=2026 or 2025.
 trade-sizes:
-	cd backend && .venv/bin/python -m app.alignment.trade_sizes --season $(SEASON)
+	cd backend && .venv/bin/python -m app.alignment.trade_sizes --season $(SEASON) $(if $(SERIES),--series $(SERIES),)
 
 align:
 	cd backend && .venv/bin/python -m app.alignment.pipeline --season $(SEASON)

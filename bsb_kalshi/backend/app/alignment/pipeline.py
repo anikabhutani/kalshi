@@ -396,8 +396,10 @@ def run(season: int, sportsbook: Path = SNAPSHOTS, db: Path = TASK3_DB, out_dir:
     return 1 if tally["fail"] else 0
 
 
-def _season_of(d: date) -> int:
-    return d.year if d.month >= 8 else d.year - 1
+def _season_of(d: date) -> int | None:
+    from app.alignment.trade_sizes import season_of
+
+    return season_of(d)
 
 
 def summary(season: int, cw: pd.DataFrame, leftover: pd.DataFrame, snap: pd.DataFrame, results: list[dict],
