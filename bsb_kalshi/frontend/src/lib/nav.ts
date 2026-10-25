@@ -1,4 +1,5 @@
 import {
+  Activity,
   ArrowLeftRight,
   Clock,
   Database,
@@ -113,6 +114,15 @@ export const NAV_ITEMS: NavItem[] = [
     questions: [],
     description:
       'What it costs to bet at DraftKings, FanDuel and Pinnacle for every NFL game of the 2025 and 2026 seasons, each season charted separately. Reads the sportsbook odds export, saves every game, and works out the vig and the expected cost of a $10 bet for every game, book, bet type and snapshot, with a quality check and charts. No requests are sent to Kalshi.',
+  },
+  {
+    path: '/ingame',
+    label: 'In-game',
+    module: 'IG',
+    icon: Activity,
+    questions: [],
+    description:
+      'What happens on Kalshi once an NFL game kicks off. Uses every 2026 game-winner trade (from the trade-size pull) and minute-by-minute prices with final results for 2025 and 2026: when the money and fees come in, what an in-game bet costs, whether in-game prices predict the winner, and whether in-game bettors win or lose after fees. No requests are sent to Kalshi.',
   },
   {
     path: '/evidence',

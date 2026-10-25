@@ -1,0 +1,201 @@
+kalshi_code,kalshi_name,feed_name,games
+AFA,Air Force,Air Force Falcons,4
+AKR,Akron,Akron Zips,5
+ALA,Alabama,Alabama Crimson Tide,5
+ALST,Alabama St.,Alabama State Hornets,1
+APP,Appalachian St.,Appalachian State Mountaineers,4
+ARIZ,Arizona,Arizona Wildcats,5
+ARK,Arkansas,Arkansas Razorbacks,5
+ARMY,Army,Army Black Knights,4
+ARST,Arkansas St.,Arkansas State Red Wolves,5
+ASU,Arizona St.,Arizona State Sun Devils,4
+AUB,Auburn,Auburn Tigers,4
+BALL,Ball St.,Ball State Cardinals,5
+BAY,Baylor,Baylor Bears,4
+BC,Boston College,Boston College Eagles,4
+BGSU,Bowling Green,Bowling Green Falcons,5
+BSU,Boise St.,Boise State Broncos,5
+BUCK,Bucknell,Bucknell Bison,1
+BUFF,Buffalo,Buffalo Bulls,5
+BYU,BYU,BYU Cougars,4
+CAL,California,California Golden Bears,5
+CAMP,Campbell,Campbell Fighting Camels,1
+CARK,Central Arkansas,Central Arkansas Bears,1
+CCAR,Coastal Carolina,Coastal Carolina Chanticleers,5
+CCSU,Central Connecticut St.,Central Connecticut Blue Devils,1
+CHAR,Charlotte,Charlotte 49ers,5
+CIN,Cincinnati,Cincinnati Bearcats,4
+CLEM,Clemson,Clemson Tigers,4
+CMU,Central Michigan,Central Michigan Chippewas,5
+COLG,Colgate,Colgate Raiders,1
+COLO,Colorado,Colorado Buffaloes,4
+CONN,UConn,UConn Huskies,5
+CP,Cal Poly,Cal Poly Mustangs,1
+CSU,Colorado St.,Colorado State Rams,5
+DEL,Delaware,Delaware Blue Hens,5
+DSU,Delaware St.,Delaware State Hornets,1
+DUKE,Duke,Duke Blue Devils,4
+DUQ,Duquesne,Duquesne Dukes,1
+ECU,East Carolina,East Carolina Pirates,5
+EMU,Eastern Michigan,Eastern Michigan Eagles,5
+ETAM,East Texas A&M,East Texas A&M Lions,1
+ETSU,East Tennessee St.,East Tennessee State Buccaneers,1
+EWU,Eastern Washington,Eastern Washington Eagles,1
+FAU,Florida Atlantic,Florida Atlantic Owls,4
+FIU,Florida International,Florida International Panthers,5
+FLA,Florida,Florida Gators,5
+FOR,Fordham,Fordham Rams,1
+FRES,Fresno St.,Fresno State Bulldogs,5
+FSU,Florida St.,Florida State Seminoles,4
+GASO,Georgia Southern,Georgia Southern Eagles,6
+GAST,Georgia St.,Georgia State Panthers,4
+GRAM,Grambling St.,Grambling State Tigers,1
+GT,Georgia Tech,Georgia Tech Yellow Jackets,4
+HAW,Hawai'i,Hawaii Rainbow Warriors,4
+HC,Holy Cross,Holy Cross Crusaders,1
+HCU,Houston Christian,Houston Baptist Huskies,1
+HOU,Houston,Houston Cougars,5
+HOW,Howard,Howard Bison,2
+ILL,Illinois,Illinois Fighting Illini,5
+ILST,Illinois St.,Illinois State Redbirds,1
+IND,Indiana,Indiana Hoosiers,5
+IOWA,Iowa,Iowa Hawkeyes,5
+ISU,Iowa St.,Iowa State Cyclones,5
+IW,Incarnate Word,Incarnate Word Cardinals,1
+JMU,James Madison,James Madison Dukes,5
+JVST,Jacksonville St.,Jacksonville State Gamecocks,5
+KENN,Kennesaw St.,Kennesaw State Owls,5
+KENT,Kent St.,Kent State Golden Flashes,5
+KSU,Kansas St.,Kansas State Wildcats,4
+KU,Kansas,Kansas Jayhawks,4
+LIB,Liberty,Liberty Flames,5
+LINW,Lindenwood,Lindenwood Lions,2
+LIU,LIU,LIU Sharks,1
+LOU,Louisville,Louisville Cardinals,5
+LSU,LSU,LSU Tigers,5
+LT,Louisiana Tech,Louisiana Tech Bulldogs,4
+MASS,UMass,UMass Minutemen,5
+MCNS,McNeese,McNeese State Cowboys,1
+MD,Maryland,Maryland Terrapins,5
+ME,Maine,Maine Black Bears,1
+MEM,Memphis,Memphis Tigers,4
+MER,Mercer,Mercer Bears,1
+MHU,Mercyhurst,Mercyhurst Lakers,2
+MIA,Miami (FL),Miami Hurricanes,3
+MICH,Michigan,Michigan Wolverines,4
+MINN,Minnesota,Minnesota Golden Gophers,5
+MISS,Ole Miss,Ole Miss Rebels,4
+MIZZ,Missouri,Missouri Tigers,5
+MOH,Miami (OH),Miami (OH) RedHawks,5
+MONM,Monmouth,Monmouth Hawks,1
+MONT,Montana,Montana Grizzlies,1
+MOSU,Missouri St.,Missouri State Bears,5
+MRSH,Marshall,Marshall Thundering Herd,5
+MSST,Mississippi St.,Mississippi State Bulldogs,4
+MSU,Michigan St.,Michigan State Spartans,5
+MTST,Montana St.,Montana State Bobcats,1
+MTU,Middle Tennessee,Middle Tennessee Blue Raiders,5
+MURR,Murray St.,Murray State Racers,1
+NAVY,Navy,Navy Midshipmen,4
+NCCU,North Carolina Central,North Carolina Central Eagles,1
+NCST,NC St.,NC State Wolfpack,4
+NCST,North Carolina St.,NC State Wolfpack,1
+ND,Notre Dame,Notre Dame Fighting Irish,5
+NDSU,North Dakota St.,North Dakota State Bison,4
+NEB,Nebraska,Nebraska Cornhuskers,5
+NEV,Nevada,Nevada Wolf Pack,4
+NICH,Nicholls St.,Nicholls State Colonels,1
+NIU,Northern Illinois,Northern Illinois Huskies,4
+NMSU,New Mexico St.,New Mexico State Aggies,4
+NORF,Norfolk St.,Norfolk State Spartans,1
+NW,Northwestern,Northwestern Wildcats,4
+ODU,Old Dominion,Old Dominion Monarchs,6
+OHIO,Ohio,Ohio Bobcats,5
+OKLA,Oklahoma,Oklahoma Sooners,4
+OKST,Oklahoma St.,Oklahoma State Cowboys,4
+ORE,Oregon,Oregon Ducks,4
+ORST,Oregon St.,Oregon State Beavers,5
+OSU,Ohio St.,Ohio State Buckeyes,5
+PITT,Pittsburgh,Pittsburgh Panthers,5
+PRST,Portland St.,Portland State Vikings,1
+PSU,Penn St.,Penn State Nittany Lions,5
+PUR,Purdue,Purdue Boilermakers,5
+PV,Prairie View A&M,Prairie View A&M Panthers,1
+RICE,Rice,Rice Owls,5
+RICH,Richmond,Richmond Spiders,1
+RMU,Robert Morris,Robert Morris Colonials,2
+RUTG,Rutgers,Rutgers Scarlet Knights,4
+SAC,Sacramento St.,Sacramento State Hornets,4
+SAM,Samford,Samford Bulldogs,1
+SCAR,South Carolina,South Carolina Gamecocks,5
+SDAK,South Dakota,South Dakota Coyotes,1
+SDSU,San Diego St.,San Diego State Aztecs,5
+SELA,Southeastern Louisiana,Southeastern Louisiana Lions,1
+SHSU,Sam Houston,Sam Houston State Bearkats,5
+SHU,Sacred Heart,Sacred Heart Pioneers,1
+SIU,Southern Illinois,Southern Illinois Salukis,1
+SJSU,San Jose St.,San Jose State Spartans,4
+SMU,SMU,SMU Mustangs,4
+SOU,Southern University,Southern University Jaguars,1
+STAN,Stanford,Stanford Cardinal,4
+STNH,Stonehill,Stonehill Skyhawks,2
+STON,Stony Brook,Stony Brook Seawolves,1
+SUU,Southern Utah,Southern Utah Thunderbirds,1
+SYR,Syracuse,Syracuse Orange,4
+TCU,TCU,TCU Horned Frogs,4
+TEM,Temple,Temple Owls,5
+TENN,Tennessee,Tennessee Volunteers,5
+TEX,Texas,Texas Longhorns,4
+TLSA,Tulsa,Tulsa Golden Hurricane,5
+TOL,Toledo,Toledo Rockets,5
+TOWS,Towson,Towson Tigers,1
+TROY,Troy,Troy Trojans,4
+TTU,Texas Tech,Texas Tech Red Raiders,4
+TULN,Tulane,Tulane Green Wave,4
+TXAM,Texas A&M,Texas A&M Aggies,5
+TXSO,Texas Southern,Texas Southern Tigers,2
+TXST,Texas St.,Texas State Bobcats,5
+UAB,UAB,UAB Blazers,6
+UCD,UC Davis,UC Davis Aggies,1
+UCF,UCF,UCF Knights,5
+UCLA,UCLA,UCLA Bruins,4
+UGA,Georgia,Georgia Bulldogs,5
+UK,Kentucky,Kentucky Wildcats,5
+ULL,Louisiana,Louisiana Ragin Cajuns,5
+ULM,Louisiana-Monroe,UL Monroe Warhawks,4
+UNC,North Carolina,North Carolina Tar Heels,4
+UNCO,Northern Colorado,Northern Colorado Bears,1
+UND,North Dakota,North Dakota Fighting Hawks,1
+UNI,Northern Iowa,Northern Iowa Panthers,1
+UNLV,UNLV,UNLV Rebels,4
+UNM,New Mexico,New Mexico Lobos,4
+UNT,North Texas,North Texas Mean Green,5
+USA,South Alabama,South Alabama Jaguars,5
+USC,USC,USC Trojans,5
+USF,South Florida,South Florida Bulls,5
+USM,Southern Miss,Southern Mississippi Golden Eagles,4
+USU,Utah St.,Utah State Aggies,5
+UTAH,Utah,Utah Utes,4
+UTEP,UTEP,UTEP Miners,5
+UTM,Tennessee-Martin,UT Martin Skyhawks,2
+UTSA,UTSA,UTSA Roadrunners,5
+UVA,Virginia,Virginia Cavaliers,5
+UWGA,West Georgia,West Georgia Wolves,1
+VAN,Vanderbilt,Vanderbilt Commodores,5
+VILL,Villanova,Villanova Wildcats,1
+VT,Virginia Tech,Virginia Tech Hokies,5
+WAG,Wagner,Wagner Seahawks,2
+WAKE,Wake Forest,Wake Forest Demon Deacons,5
+WASH,Washington,Washington Huskies,5
+WCU,Western Carolina,Western Carolina Catamounts,1
+WEB,Weber St.,Weber State Wildcats,1
+WEBB,Gardner-Webb,Gardner-Webb Runnin Bulldogs,2
+WIS,Wisconsin,Wisconsin Badgers,4
+WIU,Western Illinois,Western Illinois Leathernecks,1
+WKU,Western Kentucky,Western Kentucky Hilltoppers,6
+WM,William & Mary,William and Mary Tribe,1
+WMU,Western Michigan,Western Michigan Broncos,5
+WOF,Wofford,Wofford Terriers,1
+WSU,Washington St.,Washington State Cougars,5
+WVU,West Virginia,West Virginia Mountaineers,5
+WYO,Wyoming,Wyoming Cowboys,5

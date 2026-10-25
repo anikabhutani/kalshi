@@ -7,6 +7,7 @@ import { DepthPage } from '@/pages/DepthPage'
 import { EndpointsPage } from '@/pages/EndpointsPage'
 import { EvidencePage } from '@/pages/EvidencePage'
 import { HomePage } from '@/pages/HomePage'
+import { InGamePage } from '@/pages/InGamePage'
 import { LimitsPage } from '@/pages/LimitsPage'
 import { RestWsPage } from '@/pages/RestWsPage'
 import { SchemaPage } from '@/pages/SchemaPage'
@@ -26,6 +27,7 @@ const PAGES: Record<string, ReactElement> = {
   '/sportsbook': <SportsbookPage />,
   '/task3': <Task3Page />,
   '/task4': <Task4Page />,
+  '/ingame': <InGamePage />,
   '/evidence': <EvidencePage />,
 }
 

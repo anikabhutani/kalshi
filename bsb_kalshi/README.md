@@ -148,6 +148,53 @@ make align SEASON=2026         # steps 1-5 for one season; then SEASON=2025 (re-
 - **2025 Kalshi data**: Task 3 starts at 2026-09-14 by default; for 2025 run
   `cd backend && .venv/bin/python -m app.task3.backfill --start-date 2025-09-01`.
 
+## College football alignment (same five steps)
+
+`backend/app/alignment/college.py`, output in `data/alignment/ncaaf/<season>/` (git-ignored). Reads
+`data/odds_data.zip` (college odds) and Theo's `data/kalshi_raw_2025_season_nfl_ncaaf.zip` (Kalshi
+markets and 1-minute candles) without unzipping.
+
+```bash
+make college SEASON=2025   # ~3 min
+```
+
+Same steps and code as the NFL (`pipeline.snapshots`, `costs.compute`, the snapshot and cost checks);
+only the crosswalk differs: there is no fixed table for ~250 schools, so a Kalshi game is matched to
+the odds game on the same date (+-1 day) whose *both* team names agree (Kalshi's school name must
+start the feed name, and a following "State", "Tech", "A&M", ... means another school), clearly ahead
+of the runner-up and mutually. The team table is then learned from the matches (`team_table.csv`) and
+checked: one school per Kalshi code and per Kalshi name. Kalshi duplicate listings of one game keep
+the listing with candles and more volume. n values: the NFL game-winner trade sizes (no college trade
+sizes pulled). The three files: `crosswalk.csv`, `snapshots.csv`, `costs.csv.gz` (gzip; pandas
+reads it directly).
+
+## In-game analysis (page "In-game")
+
+Code in `backend/app/ingame/analysis.py`, output in `data/ingame/<season>/` (git-ignored). No Kalshi
+requests: it reads the trades saved by `make trade-sizes` (2026 so far) and the Task 3 candles and
+market results (2025 and 2026).
+
+```bash
+make ingame        # both seasons; ~40 s the first time, seconds after (cached per market)
+```
+
+- **Kickoff**: Kalshi's milestone start time; else the sportsbook feed's final start time
+  (`data/alignment/<season>/crosswalk.csv`); else Task 3's estimate. Preseason left out.
+- **Trades** (2026): money, fees and trade counts by time from kickoff and by price group of the
+  side the taker bought; trade sizes; fee rounding; taker result per $10 before/after fees on
+  settled markets (ties left out). Fees use Kalshi's formula 0.07 x contracts x p x (1 - p) rounded
+  up to the cent per fill, in exact integer arithmetic.
+- **Prices** (both seasons): bid/ask sampled every 5 minutes from 3 h before to 4 h after kickoff
+  (latest candle at or before each moment, never after settlement): spread, cost per $10 at the
+  median trade size, share of markets with both sides quoted; accuracy (Brier score, calibration
+  slope, reliability) of one market per game at -60, 0, 30, ..., 180 minutes vs the result.
+- **Uncertainty**: 95% intervals resample whole games, 1,000 times. Points after 150 minutes only
+  include unfinished games, so they are biased toward close or long games.
+- **Checks**: trades reconcile with the trade-size report, every trade binned once, fees recomputed
+  with exact fractions, no trades after settlement, taker totals equal by two paths, kickoff sources
+  agree, exactly one winner per game, no look-ahead, no crossed quotes, enough games per checkpoint.
+  `tests/test_ingame.py` breaks each one on purpose.
+
 ## Sources of truth
 
 Everything the app knows about the API comes from `specs/`:

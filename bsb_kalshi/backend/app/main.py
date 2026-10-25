@@ -10,6 +10,7 @@ from fastapi import FastAPI
 from app.config import get_settings
 from app.notes_file import restore_empty_notes
 from app.modules import (
+    ingame,
     m0_core,
     m1_endpoints,
     m2_schema,
@@ -51,5 +52,6 @@ for module in (
     m8_export,
     t3_nfl_costs,
     t4_sportsbook,
+    ingame,
 ):
     app.include_router(module.router)

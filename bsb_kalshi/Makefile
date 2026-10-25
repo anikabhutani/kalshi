@@ -1,4 +1,4 @@
-.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align
+.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align ingame college
 
 PYTHON ?= python3
 
@@ -39,3 +39,11 @@ trade-sizes:
 
 align:
 	cd backend && .venv/bin/python -m app.alignment.pipeline --season $(SEASON)
+
+# In-game analysis (needs make trade-sizes for trades; Task 3 for prices and results). Both seasons.
+ingame:
+	cd backend && .venv/bin/python -m app.ingame.analysis --season 2025 && .venv/bin/python -m app.ingame.analysis --season 2026
+
+# College football (NCAAF) alignment, one season. Needs data/odds_data.zip and Theo's raw Kalshi zip in data/.
+college:
+	cd backend && .venv/bin/python -m app.alignment.college --season $(or $(SEASON),2025)

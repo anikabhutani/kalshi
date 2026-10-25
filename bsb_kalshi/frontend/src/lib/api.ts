@@ -1532,3 +1532,111 @@ export function exportFileUrl(name: string, path: string): string {
 export function jobEventsUrl(jobId: string): string {
   return `/api/jobs/${jobId}/events`
 }
+
+// ---------------------------------------------------------------------------------------------
+// In-game analysis
+// ---------------------------------------------------------------------------------------------
+
+export interface IGCheck {
+  id: string
+  title: string
+  status: 'pass' | 'warn' | 'skip' | 'fail'
+  detail: string
+  guards_against: string
+}
+
+export interface IGReturn {
+  phase: string
+  group_label?: string
+  bucket_label?: string
+  dollars: number
+  games: number
+  avg_price: number
+  win_rate: number
+  before_fees: number
+  after_fees: number
+  before_lo: number
+  before_hi: number
+  after_lo: number
+  after_hi: number
+}
+
+export interface IGFacts {
+  season: number
+  games: number
+  settled_games: number
+  has_trades: boolean
+  n_contracts: number
+  dollars?: number
+  fees?: number
+  trades?: number
+  inplay_dollar_share?: number
+  inplay_fee_share?: number
+  fee_per_10?: number
+  fee_per_10_pre?: number
+  fee_per_10_in?: number
+  taker_after_fees?: Record<string, number>
+  taker_before_fees?: Record<string, number>
+  taker_after_ci?: Record<string, [number, number]>
+  sizes?: Record<string, { median: number; p75: number; p90: number; trades: number; share_1_or_less: number }>
+  near_certain?: { dollar_share_90_plus: number; trade_share_90_plus: number; fee_share_90_plus: number; dollar_share_10_minus: number }
+  top10_inplay_share?: number
+  rounding_small?: Record<string, number>
+  rounding_total?: number
+  games_with_trades?: number
+  returns_games?: number
+  peak_bin?: string
+  peak_bin_share?: number
+  late_fee_per_10?: number
+  prime_inplay_per_game?: number
+  day_inplay_per_game?: number
+  inplay_longshot_dollar_share?: number
+  inplay_longshot_fee_share?: number
+  brier?: Record<string, number>
+  slope?: Record<string, number>
+  cost_phase_group?: Record<string, number>
+  spread_phase_group?: Record<string, number>
+}
+
+export interface IGSeason {
+  season: number
+  generated_at: string
+  games: number
+  settled_games: number
+  has_trades: boolean
+  n_contracts: number
+  n_source: string
+  facts: IGFacts
+  checks: IGCheck[]
+  spread_by_minute?: { minute: number; markets: number; spread_c: number; cost: number; spread_part: number; fee_part: number; two_sided_share: number }[]
+  cost_by_phase_group?: { phase: string; group_label: string; quotes: number; spread_c: number; cost: number; fee_part: number; spread_part: number }[]
+  calibration: {
+    by_checkpoint: { minute: number; games: number; brier: number; brier_lo: number; brier_hi: number; slope: number; intercept: number }[]
+    reliability: { minute: number; bucket_label: string; games: number; mean_price: number; won: number }[]
+  }
+  trades?: {
+    totals: Record<string, number>
+    by_bin: { bin_label: string; trades: number; dollars: number; fee: number; dollar_share: number; fee_share: number; fee_per_10: number | null }[]
+    by_phase_group: { phase: string; group_label: string; trades: number; dollars: number; fee: number; dollar_share: number; fee_share: number; fee_per_10: number }[]
+    sizes: { phase: string; trades: number; median: number; p75: number; p90: number; median_dollars: number; p90_dollars: number; share_1_or_less: number }[]
+    rounding: { phase: string; size_label: string; trades: number; fee: number; fee_exact: number; rounding_extra: number }[]
+    returns_by_group: IGReturn[]
+    returns_by_decile: IGReturn[]
+    returns_by_phase: IGReturn[]
+    returns_games: number
+    by_slot: { slot: string; games: number; pre: number; inplay: number; inplay_per_game: number; pre_per_game: number; inplay_share: number }[]
+    top10_inplay_share: number
+    games_with_trades: number
+    near_certain: Record<string, number>
+  }
+}
+
+export interface IGResults {
+  generated_at: string
+  seasons: IGSeason[]
+}
+
+export const ingameApi = {
+  results: () => request<IGResults | null>('/api/ingame/results'),
+  run: () => request<{ seasons: { season: number; games: number; has_trades: boolean; checks_failed: number }[]; seconds: number }>('/api/ingame/run', { method: 'POST' }),
+}
