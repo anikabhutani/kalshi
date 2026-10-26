@@ -1,6 +1,6 @@
 # College football (NCAAF) alignment, 2025 season
 
-Generated 2026-10-25 22:36 UTC. Games: 978; matched: 935; Kalshi events left unmatched: 1.
+Generated 2026-10-26 18:38 UTC. Games: 978; matched: 935; Kalshi events left unmatched: 1.
 
 ## Match status
 
@@ -30,7 +30,7 @@ Generated 2026-10-25 22:36 UTC. Games: 978; matched: 935; Kalshi events left unm
 - [pass] Kalshi fee per order is the exact fee rounded up by less than 1 cent: 0 Kalshi rows outside [exact fee, exact fee + 1 cent).
 - [pass] n applies to Kalshi only: 0 sportsbook rows with an n, 0 Kalshi rows without one.
 - [pass] No sportsbook price older than the maximum age is used: 0 usable rows break it. Usable: 129466 of 224400; max ages (min): 24h 360, 3h 45, 1h 15, 15m 10, close 60.
-- [pass] n values are real trade sizes: From NFL trade_sizes_2026.json, KXNFLGAME (2026 sizes used for 2025) (no college trade sizes pulled).
+- [pass] n values are real trade sizes: From college trade_sizes_2025.json, KXNCAAFGAME.
 
 ## Median price age (minutes) at each checkpoint
 
@@ -45,37 +45,37 @@ close             11.8     11.8     0.0      11.9
 ## Median cost per $10 (usable rows only)
 
 Rows: the venue you bet at (Kalshi at each order size n). Columns: the ruler (whose fair price the cost is measured against). Own ruler = that venue's margin only.
-n values from: NFL trade_sizes_2026.json, KXNFLGAME (2026 sizes used for 2025) (no college trade sizes pulled). Usable rows: 129466 of 224400.
+n values from: college trade_sizes_2025.json, KXNCAAFGAME. Usable rows: 129466 of 224400.
 
 ruler                    A_Kalshi  B_Pinnacle  B_FanDuel  B_DraftKings
 checkpoint venue_n                                                    
-24h        Kalshi n=24      0.394       0.364      0.390         0.360
-           Kalshi n=72      0.391       0.360      0.385         0.359
-           Kalshi n=213     0.390       0.360      0.383         0.359
+24h        Kalshi n=50      0.391       0.361      0.386         0.359
+           Kalshi n=196     0.390       0.360      0.382         0.359
+           Kalshi n=600     0.390       0.360      0.381         0.359
            Pinnacle         0.364       0.329      0.366         0.364
            FanDuel          0.389       0.398      0.400         0.392
            DraftKings       0.410       0.414      0.414         0.440
-3h         Kalshi n=24      0.383       0.371      0.372         0.367
-           Kalshi n=72      0.381       0.368      0.372         0.367
-           Kalshi n=213     0.380       0.368      0.370         0.366
+3h         Kalshi n=50      0.382       0.370      0.371         0.369
+           Kalshi n=196     0.380       0.368      0.370         0.367
+           Kalshi n=600     0.380       0.367      0.369         0.366
            Pinnacle         0.325       0.301      0.329         0.326
            FanDuel          0.390       0.398      0.398         0.399
            DraftKings       0.403       0.408      0.416         0.440
-1h         Kalshi n=24      0.383       0.340      0.361         0.339
-           Kalshi n=72      0.379       0.340      0.359         0.338
-           Kalshi n=213     0.379       0.338      0.358         0.337
+1h         Kalshi n=50      0.380       0.337      0.359         0.338
+           Kalshi n=196     0.380       0.336      0.358         0.337
+           Kalshi n=600     0.379       0.337      0.358         0.337
            Pinnacle         0.328       0.308      0.331         0.326
            FanDuel          0.395       0.394      0.391         0.398
            DraftKings       0.401       0.408      0.416         0.442
-15m        Kalshi n=24      0.383       0.344      0.342         0.346
-           Kalshi n=72      0.379       0.343      0.340         0.344
-           Kalshi n=213     0.379       0.343      0.340         0.344
+15m        Kalshi n=50      0.380       0.345      0.342         0.345
+           Kalshi n=196     0.380       0.343      0.340         0.344
+           Kalshi n=600     0.379       0.343      0.340         0.344
            Pinnacle         0.318       0.295      0.311         0.315
            FanDuel          0.394       0.409      0.407         0.398
            DraftKings       0.413       0.413      0.415         0.440
-close      Kalshi n=24      0.400       0.362      0.395         0.364
-           Kalshi n=72      0.397       0.360      0.394         0.360
-           Kalshi n=213     0.396       0.359      0.394         0.360
+close      Kalshi n=50      0.399       0.360      0.396         0.361
+           Kalshi n=196     0.396       0.359      0.394         0.360
+           Kalshi n=600     0.395       0.359      0.394         0.359
            Pinnacle         0.324       0.298      0.321         0.321
            FanDuel          0.394       0.395      0.400         0.401
            DraftKings       0.406       0.409      0.413         0.440

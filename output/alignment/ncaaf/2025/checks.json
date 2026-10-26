@@ -150,7 +150,7 @@
     "id": "n_values",
     "title": "n values are real trade sizes",
     "status": "pass",
-    "detail": "From NFL trade_sizes_2026.json, KXNFLGAME (2026 sizes used for 2025) (no college trade sizes pulled).",
+    "detail": "From college trade_sizes_2025.json, KXNCAAFGAME.",
     "guards": "Costs for order sizes nobody trades."
   }
 ]

@@ -1,4 +1,4 @@
-"""Median, 75th and 90th percentile Kalshi trade sizes (contracts) for NFL markets, one season.
+"""Median, 75th and 90th percentile Kalshi trade sizes (contracts) for NFL or college football markets, one season.
 
 Task 3 stores 1-minute candles, which only hold the total volume per minute, so trade sizes need
 the individual trades. For every NFL game, spread and total market in the Task 3 store whose game
@@ -17,10 +17,17 @@ Two ways to read "trade size", both reported:
 Each with and without block trades (large trades matched off the order book). Percentiles use
 ``method="inverted_cdf"``, so every reported size is a size that actually occurred.
 
+College football (``--league ncaaf``): the markets are the Kalshi game-winner markets (KXNCAAFGAME)
+of the matched games in the college crosswalk (``data/alignment/ncaaf/<season>/crosswalk.csv``, from
+``make college``), i.e. exactly the markets the college costs use. Trades go to
+``data/alignment/ncaaf/trades/<season>/`` and the sizes to ``data/alignment/ncaaf/trade_sizes_<season>.json``,
+which ``make college`` then uses for n instead of the NFL sizes.
+
 Command line (needs your Kalshi key in .env; read-only GETs)::
 
     cd backend && .venv/bin/python -m app.alignment.trade_sizes --season 2026
     cd backend && .venv/bin/python -m app.alignment.trade_sizes --season 2026 --from-saved   # no requests
+    cd backend && .venv/bin/python -m app.alignment.trade_sizes --season 2025 --league ncaaf
 """
 
 from __future__ import annotations
@@ -45,9 +52,15 @@ from app.task4.common import EASTERN, REPO_ROOT, season_start
 TASK3_DB = REPO_ROOT / "data" / "task3" / "nfl_costs.db"
 OUT_DIR = REPO_ROOT / "data" / "alignment"
 SERIES = ("KXNFLGAME", "KXNFLSPREAD", "KXNFLTOTAL")
+NCAAF_SERIES = ("KXNCAAFGAME",)
+NCAAF_DIR = OUT_DIR / "ncaaf"
+LEAGUES = {  # league -> (series, label of the all-markets group, output folder)
+    "nfl": (SERIES, "all NFL markets", OUT_DIR),
+    "ncaaf": (NCAAF_SERIES, "all college markets", NCAAF_DIR),
+}
 PAGE = 1000
 SAFETY_PAGES = 5000  # 5 million trades in one market: far beyond any NFL market, so hitting it is an error
-TICKER_DATE = re.compile(r"^(KXNFL[A-Z]+)-(\d{2})([A-Z]{3})(\d{2})")
+TICKER_DATE = re.compile(r"^(KX(?:NFL|NCAAF)[A-Z]+)-(\d{2})([A-Z]{3})(\d{2})")
 MONTHS = {m: i for i, m in enumerate(["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP",
                                        "OCT", "NOV", "DEC"], 1)}
 TRADE_COLS = ["trade_id", "ticker", "count", "yes_price", "created_time", "is_block_trade", "taker_outcome_side"]
@@ -91,6 +104,25 @@ def season_markets(season: int, db: Path = TASK3_DB, series: tuple[str, ...] = S
     m["game_date"] = [p[1] if p else None for p in parsed]
     keep = [p is not None and p[0] in series and season_of(p[1]) == season and p[1] < today for p in parsed]
     return m.loc[np.array(keep, dtype=bool), ["ticker", "series", "game_date", "status"]].reset_index(drop=True)
+
+
+def college_markets(season: int, folder: Path = NCAAF_DIR, today: date | None = None) -> pd.DataFrame:
+    """Kalshi game-winner markets (both teams) of the matched games in the college crosswalk for
+    ``season``, dated before today (Eastern). These are the markets the college costs are computed on."""
+    today = today or datetime.now(EASTERN).date()
+    path = folder / str(season) / "crosswalk.csv"
+    cols = ["ticker", "series", "game_date", "status"]
+    if not path.exists():
+        return pd.DataFrame(columns=cols)
+    cw = pd.read_csv(path)
+    m = cw[cw["status"] == "matched"]
+    tickers = sorted({t for col in ("kalshi_ticker_home", "kalshi_ticker_away") for t in m[col].dropna()})
+    rows = []
+    for t in tickers:
+        p = market_date(t)
+        if p is not None and p[0] in NCAAF_SERIES and p[1] < today:
+            rows.append({"ticker": t, "series": p[0], "game_date": p[1], "status": "matched"})
+    return pd.DataFrame(rows, columns=cols)
 
 
 def _count(t: dict[str, Any]) -> float | None:
@@ -183,10 +215,11 @@ def _pct(values: np.ndarray, weights: np.ndarray | None = None) -> dict[str, flo
     return {f"p{p}": float(v[np.searchsorted(cum, p / 100)]) for p in PERCENTILES}
 
 
-def summarize(trades: pd.DataFrame, markets: pd.DataFrame) -> dict[str, Any]:
+def summarize(trades: pd.DataFrame, markets: pd.DataFrame, league: str = "nfl") -> dict[str, Any]:
+    series, all_label, _ = LEAGUES[league]
     t = trades.merge(markets[["ticker", "series"]], on="ticker", how="left")
     out: dict[str, Any] = {}
-    for label, sub in (("all NFL markets", t), *((s, t[t["series"] == s]) for s in SERIES)):
+    for label, sub in ((all_label, t), *((s, t[t["series"] == s]) for s in series)):
         group: dict[str, Any] = {}
         for blocks, d in (("including block trades", sub), ("excluding block trades", sub[~sub["is_block_trade"]])):
             c = d["count"].to_numpy(dtype=float)
@@ -206,7 +239,9 @@ def load_saved(season: int, markets: pd.DataFrame, out: Path = OUT_DIR) -> pd.Da
     return df
 
 
-def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any], stats: dict[str, Any]) -> list[dict]:
+def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any], stats: dict[str, Any],
+           league: str = "nfl") -> list[dict]:
+    all_label = LEAGUES[league][1]
     out = []
     p = progress.get("markets", {})
     missing = [t for t in markets["ticker"] if not p.get(t, {}).get("done")]
@@ -229,7 +264,7 @@ def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any]
     if c:
         for q in PERCENTILES:
             k = max(0, int(np.ceil(q / 100 * len(c))) - 1)  # inverted CDF: smallest x with share >= q
-            got = stats["all NFL markets"]["including block trades"]["per_trade"][f"p{q}"]
+            got = stats[all_label]["including block trades"]["per_trade"][f"p{q}"]
             worst = max(worst, abs(c[k] - got))
     out.append({"id": "percentiles_recomputed", "status": "fail" if worst > 1e-9 else ("pass" if c else "skip"),
                 "detail": f"Median, p75 and p90 recomputed from the sorted sizes; largest difference {worst:g}."})
@@ -242,13 +277,18 @@ def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any]
     return out
 
 
-def report(season: int, markets: pd.DataFrame, out: Path = OUT_DIR) -> int:
+def report(season: int, markets: pd.DataFrame, out: Path | None = None, league: str = "nfl") -> int:
+    out = out or LEAGUES[league][2]
     trades = load_saved(season, markets, out)
+    if trades.empty:
+        print(f"No saved trades for {season} in {out / 'trades' / str(season)}; run without --from-saved.",
+              file=sys.stderr)
+        return 2
     prog_path = _progress_path(season, out)
     progress = json.loads(prog_path.read_text()) if prog_path.exists() else {"markets": {}}
-    stats = summarize(trades, markets)
-    chk = checks(trades, markets, progress, stats)
-    result = {"season": season, "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+    stats = summarize(trades, markets, league)
+    chk = checks(trades, markets, progress, stats, league)
+    result = {"season": season, "league": league, "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
               "markets": int(len(markets)), "percentile_method": "inverted_cdf (each value is a real trade size)",
               "stats": stats, "checks": chk}
     out.mkdir(parents=True, exist_ok=True)
@@ -261,7 +301,8 @@ def report(season: int, markets: pd.DataFrame, out: Path = OUT_DIR) -> int:
 def _markdown(r: dict[str, Any]) -> str:
     def fmt(x: float | None) -> str:
         return "-" if x is None else f"{x:g}"
-    lines = [f"# Kalshi NFL trade sizes, {r['season']} season (contracts)", "",
+    league = {"nfl": "NFL", "ncaaf": "college football (game-winner markets of the matched games)"}[r.get("league", "nfl")]
+    lines = [f"# Kalshi {league} trade sizes, {r['season']} season (contracts)", "",
              f"{r['markets']} markets; percentiles use {r['percentile_method']}.", "",
              "| Markets | Block trades | Trades | Median | p75 | p90 | Median (per contract) | p75 (pc) | p90 (pc) |",
              "|---|---|---|---|---|---|---|---|---|"]
@@ -294,7 +335,7 @@ def client_getter(client: Any) -> Getter:
     return get
 
 
-async def _live(season: int, markets: pd.DataFrame, max_requests: int | None) -> int:
+async def _live(season: int, markets: pd.DataFrame, max_requests: int | None, out: Path = OUT_DIR) -> int:
     from app.config import get_settings
     from app.db import Database
     from app.errors import RateLimited, ReconError
@@ -317,7 +358,7 @@ async def _live(season: int, markets: pd.DataFrame, max_requests: int | None) ->
 
     started = time.time()
     try:
-        done = await pull_season(client_getter(client), markets, season, max_requests=max_requests)
+        done = await pull_season(client_getter(client), markets, season, out=out, max_requests=max_requests)
         print(f"Pulled {done['markets_pulled']} markets with {done['requests']} requests in "
               f"{time.time() - started:.0f} s.")
     except (Stopped, RateLimited, ReconError) as exc:
@@ -329,22 +370,32 @@ async def _live(season: int, markets: pd.DataFrame, max_requests: int | None) ->
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Kalshi NFL trade sizes (median, p75, p90) for one season.")
+    parser = argparse.ArgumentParser(description="Kalshi trade sizes (median, p75, p90) for one season.")
     parser.add_argument("--season", type=int, required=True)
-    parser.add_argument("--series", nargs="+", default=list(SERIES), choices=list(SERIES))
+    parser.add_argument("--league", choices=list(LEAGUES), default="nfl",
+                        help="nfl (Task 3 markets) or ncaaf (game-winner markets of the college crosswalk)")
+    parser.add_argument("--series", nargs="+", default=None, choices=list(SERIES), help="NFL series to include")
     parser.add_argument("--max-requests", type=int, default=None, help="stop after this many requests")
     parser.add_argument("--from-saved", action="store_true", help="only recompute from saved trades")
     args = parser.parse_args(argv)
-    markets = season_markets(args.season, series=tuple(args.series))
-    if markets.empty:
-        print(f"No {args.season} NFL markets in the Task 3 data ({TASK3_DB}). Run Task 3 first.", file=sys.stderr)
-        return 2
+    out = LEAGUES[args.league][2]
+    if args.league == "ncaaf":
+        markets = college_markets(args.season)
+        if markets.empty:
+            print(f"No {args.season} college markets: {NCAAF_DIR / str(args.season) / 'crosswalk.csv'} is missing "
+                  f"or has no matched games. Run make college SEASON={args.season} first.", file=sys.stderr)
+            return 2
+    else:
+        markets = season_markets(args.season, series=tuple(args.series or SERIES))
+        if markets.empty:
+            print(f"No {args.season} NFL markets in the Task 3 data ({TASK3_DB}). Run Task 3 first.", file=sys.stderr)
+            return 2
     print(f"{len(markets)} markets: " + ", ".join(f"{s} {n}" for s, n in markets["series"].value_counts().items()))
     if not args.from_saved:
-        code = asyncio.run(_live(args.season, markets, args.max_requests))
+        code = asyncio.run(_live(args.season, markets, args.max_requests, out))
         if code:
             return code
-    return report(args.season, markets)
+    return report(args.season, markets, out, args.league)
 
 
 if __name__ == "__main__":

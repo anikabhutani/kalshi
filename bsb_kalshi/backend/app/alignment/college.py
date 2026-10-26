@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 import unicodedata
 import zipfile
 from datetime import date, timedelta
@@ -481,6 +482,11 @@ def crosswalk_checks(games: pd.DataFrame, events: pd.DataFrame, cw: pd.DataFrame
 def run(season: int, odds: Path = ODDS_ZIP, kalshi: Path | None = None, out_dir: Path = OUT_DIR,
         n_folder: Path = pl.OUT_DIR) -> int:
     kalshi = kalshi or KALSHI_ZIPS.get(season, KALSHI_ZIP)
+    for path, what in ((kalshi, "Kalshi raw zip"), (odds, "odds zip")):
+        if not Path(path).exists():
+            print(f"Missing {what}: {path}. Put it there (exact name) and run again; nothing was written.",
+                  file=sys.stderr)
+            return 2
     snaps, feed_dups = drop_feed_duplicates(load_odds(odds))
     games = game_list(snaps, season)
     markets = load_kalshi_markets(kalshi)
@@ -499,9 +505,14 @@ def run(season: int, odds: Path = ODDS_ZIP, kalshi: Path | None = None, out_dir:
     codes = {**dict(zip(zip(m["game_id"], m["home"]), m["kalshi_code_home"])),
              **dict(zip(zip(m["game_id"], m["away"]), m["kalshi_code_away"]))}
     snap["team_code"] = [codes.get((g, t)) for g, t in zip(snap["game_id"], snap["team"])]
-    n_list, n_src = costs_mod.n_values(season, n_folder)
-    if "placeholder" not in n_src:
-        n_src = f"NFL {n_src} (no college trade sizes pulled)"
+    # college trade sizes (make trade-sizes LEAGUE=ncaaf) when pulled, otherwise the NFL sizes, labelled
+    n_list, n_src = costs_mod.n_values(season, out_dir, groups=("KXNCAAFGAME", "all college markets"))
+    if "placeholder" in n_src:
+        n_list, n_src = costs_mod.n_values(season, n_folder)
+        if "placeholder" not in n_src:
+            n_src = f"NFL {n_src} (no college trade sizes pulled)"
+    else:
+        n_src = f"college {n_src}"
     costs = costs_mod.compute(snap, season, n_list, n_src)
 
     results = crosswalk_checks(games, events, cw, leftover, table, snaps, missing, feed_dups)

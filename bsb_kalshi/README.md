@@ -164,9 +164,28 @@ the odds game on the same date (+-1 day) whose *both* team names agree (Kalshi's
 start the feed name, and a following "State", "Tech", "A&M", ... means another school), clearly ahead
 of the runner-up and mutually. The team table is then learned from the matches (`team_table.csv`) and
 checked: one school per Kalshi code and per Kalshi name. Kalshi duplicate listings of one game keep
-the listing with candles and more volume. n values: the NFL game-winner trade sizes (no college trade
-sizes pulled). The three files: `crosswalk.csv`, `snapshots.csv`, `costs.csv.gz` (gzip; pandas
-reads it directly).
+the listing with candles and more volume. n values: the college game-winner trade sizes when they
+have been pulled (below), otherwise the NFL ones, and `n_source` in the costs file says which. The
+three files: `crosswalk.csv`, `snapshots.csv`, `costs.csv.gz` (gzip; pandas reads it directly).
+
+College trade sizes (needs your Kalshi key in `.env`; read-only; run `make college` first, since the
+markets are the KXNCAAFGAME markets of the matched games in the crosswalk). Progress is saved per
+market, so after a rate-limit stop the same command continues:
+
+```bash
+make trade-sizes SEASON=2025 LEAGUE=ncaaf   # -> data/alignment/ncaaf/trade_sizes_2025.json
+make trade-sizes SEASON=2026 LEAGUE=ncaaf
+make college SEASON=2025 && make college SEASON=2026   # costs now use the college sizes
+```
+
+Deck charts (slides "Kalshi vs. the Sportsbooks" and "Where the Gap Is Biggest") and their stat-box
+numbers, from the alignment output of both seasons (`backend/app/alignment/slide_charts.py`; the
+`--league nfl` run reproduces the NFL slides exactly):
+
+```bash
+make slide-charts                 # college -> data/alignment/ncaaf/charts/
+make slide-charts LEAGUE=nfl      # NFL     -> data/alignment/charts/
+```
 
 ## In-game analysis (page "In-game")
 

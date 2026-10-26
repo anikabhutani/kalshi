@@ -68,7 +68,8 @@ def fee_dollars(n: int, price: float) -> float:
     return math.ceil(round(raw * 100, 9)) / 100
 
 
-def n_values(season: int, folder: Path) -> tuple[list[tuple[str, int]], str]:
+def n_values(season: int, folder: Path,
+             groups: tuple[str, ...] = ("KXNFLGAME", "all NFL markets")) -> tuple[list[tuple[str, int]], str]:
     """[(label, n), ...] and where they came from.
 
     The season's own trade sizes if they exist, otherwise another season's (the same sizes for
@@ -80,8 +81,11 @@ def n_values(season: int, folder: Path) -> tuple[list[tuple[str, int]], str]:
             continue
         allstats = json.loads(path.read_text())["stats"]
         # costs are for game-winner bets, so game-winner trade sizes when the file has them
-        group = "KXNFLGAME" if allstats.get("KXNFLGAME", {}).get("excluding block trades", {}).get("trades") \
-            else "all NFL markets"
+        # the first group with trades; otherwise the first group present at all (older files carry no counts)
+        group = next((g for g in groups if allstats.get(g, {}).get("excluding block trades", {}).get("trades")),
+                     next((g for g in groups if g in allstats), None))
+        if group is None:  # e.g. an NFL file when college sizes are asked for
+            continue
         stats = allstats[group]["excluding block trades"]["per_trade"]
         if all(stats.get(k) for k in ("p50", "p75", "p90")):
             src = f"trade_sizes_{s}.json, {group}" + ("" if s == season else f" ({s} sizes used for {season})")

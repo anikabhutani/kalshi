@@ -1,0 +1,106 @@
+{
+  "season": 2025,
+  "league": "ncaaf",
+  "generated_at": "2026-10-26T05:37:33+00:00",
+  "markets": 1870,
+  "percentile_method": "inverted_cdf (each value is a real trade size)",
+  "stats": {
+    "all college markets": {
+      "including block trades": {
+        "trades": 12174453,
+        "contracts": 4020046272.0,
+        "per_trade": {
+          "p50": 50.0,
+          "p75": 196.0,
+          "p90": 600.0
+        },
+        "per_contract": {
+          "p50": 2222.0,
+          "p75": 6000.0,
+          "p90": 12207.0
+        }
+      },
+      "excluding block trades": {
+        "trades": 12174453,
+        "contracts": 4020046272.0,
+        "per_trade": {
+          "p50": 50.0,
+          "p75": 196.0,
+          "p90": 600.0
+        },
+        "per_contract": {
+          "p50": 2222.0,
+          "p75": 6000.0,
+          "p90": 12207.0
+        }
+      }
+    },
+    "KXNCAAFGAME": {
+      "including block trades": {
+        "trades": 12174453,
+        "contracts": 4020046272.0,
+        "per_trade": {
+          "p50": 50.0,
+          "p75": 196.0,
+          "p90": 600.0
+        },
+        "per_contract": {
+          "p50": 2222.0,
+          "p75": 6000.0,
+          "p90": 12207.0
+        }
+      },
+      "excluding block trades": {
+        "trades": 12174453,
+        "contracts": 4020046272.0,
+        "per_trade": {
+          "p50": 50.0,
+          "p75": 196.0,
+          "p90": 600.0
+        },
+        "per_contract": {
+          "p50": 2222.0,
+          "p75": 6000.0,
+          "p90": 12207.0
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "all_markets_pulled",
+      "status": "pass",
+      "detail": "1870 markets; 0 not finished; 0 hit the page safety limit."
+    },
+    {
+      "id": "no_duplicate_trades",
+      "status": "pass",
+      "detail": "12,174,453 trades; 0 trade ids appear twice after merging live and historical."
+    },
+    {
+      "id": "sizes_valid",
+      "status": "pass",
+      "detail": "0 trades with a missing or non-positive size."
+    },
+    {
+      "id": "trades_belong_to_markets",
+      "status": "pass",
+      "detail": "0 trades whose ticker is not one of the season's markets."
+    },
+    {
+      "id": "percentiles_recomputed",
+      "status": "pass",
+      "detail": "Median, p75 and p90 recomputed from the sorted sizes; largest difference 0."
+    },
+    {
+      "id": "markets_without_trades",
+      "status": "pass",
+      "detail": "0 markets had no trades at all (normal for far-off strikes)."
+    },
+    {
+      "id": "block_trades",
+      "status": "pass",
+      "detail": "0.00% of trades are block trades; both versions are reported."
+    }
+  ]
+}

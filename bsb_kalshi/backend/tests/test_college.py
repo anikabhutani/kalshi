@@ -148,3 +148,46 @@ def test_drops_odds_feed_duplicate_listings():
     })
     kept, dropped = col.drop_feed_duplicates(snaps)
     assert dropped == ["old"] and set(kept["event_id"]) == {"new", "other"}
+
+
+def test_college_trade_size_markets_come_from_the_crosswalk(tmp_path):
+    from app.alignment import trade_sizes as ts
+
+    folder = tmp_path / "2025"
+    folder.mkdir()
+    pd.DataFrame({
+        "status": ["matched", "matched", "unmatched"],
+        "kalshi_ticker_home": ["KXNCAAFGAME-25SEP06OSUTEX-OSU", "KXNCAAFGAME-25DEC01AB-A", None],
+        "kalshi_ticker_away": ["KXNCAAFGAME-25SEP06OSUTEX-TEX", "KXNCAAFGAME-25DEC01AB-B", None],
+    }).to_csv(folder / "crosswalk.csv", index=False)
+    m = ts.college_markets(2025, tmp_path, today=date(2025, 11, 1))
+    # both teams' markets of matched games, only games before today
+    assert sorted(m["ticker"]) == ["KXNCAAFGAME-25SEP06OSUTEX-OSU", "KXNCAAFGAME-25SEP06OSUTEX-TEX"]
+    assert set(m["series"]) == {"KXNCAAFGAME"}
+    assert ts.college_markets(2026, tmp_path).empty  # no crosswalk: nothing, not an error
+
+
+def test_college_trade_size_report_and_n_values(tmp_path):
+    from app.alignment import costs as cm
+    from app.alignment import trade_sizes as ts
+
+    markets = pd.DataFrame({"ticker": ["KXNCAAFGAME-25SEP06OSUTEX-OSU"], "series": ["KXNCAAFGAME"],
+                            "game_date": [date(2025, 9, 6)], "status": ["matched"]})
+    folder = tmp_path / "trades" / "2025"
+    folder.mkdir(parents=True)
+    pd.DataFrame({"trade_id": list("abcde"), "ticker": ["KXNCAAFGAME-25SEP06OSUTEX-OSU"] * 5,
+                  "count": [1, 2, 5, 10, 400], "yes_price": [0.5] * 5, "created_time": ["2025-09-06T12:00:00Z"] * 5,
+                  "is_block_trade": [False, False, False, False, True], "taker_outcome_side": ["yes"] * 5}
+                 ).to_csv(folder / "KXNCAAFGAME-25SEP06OSUTEX-OSU.csv.gz", index=False, compression="gzip")
+    (tmp_path / "trades" / "2025" / "_progress.json").write_text(json.dumps(
+        {"markets": {"KXNCAAFGAME-25SEP06OSUTEX-OSU": {"done": True, "trades": 5}}}))
+    assert ts.report(2025, markets, tmp_path, league="ncaaf") == 0
+    stats = json.loads((tmp_path / "trade_sizes_2025.json").read_text())["stats"]
+    assert set(stats) == {"all college markets", "KXNCAAFGAME"}
+    assert stats["KXNCAAFGAME"]["excluding block trades"]["per_trade"] == {"p50": 2.0, "p75": 5.0, "p90": 10.0}
+    # the college costs pick these up (game-winner group), for 2025 and, labelled, for 2026
+    n, src = cm.n_values(2025, tmp_path, groups=("KXNCAAFGAME", "all college markets"))
+    assert n == [("median", 2), ("p75", 5), ("p90", 10)] and src == "trade_sizes_2025.json, KXNCAAFGAME"
+    assert "2025 sizes used for 2026" in cm.n_values(2026, tmp_path, groups=("KXNCAAFGAME",))[1]
+    # an NFL file has no college groups: not used for college
+    assert cm.n_values(2025, tmp_path, groups=("KXNFLGAME", "all NFL markets"))[1].startswith("placeholder")

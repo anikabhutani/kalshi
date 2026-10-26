@@ -1,4 +1,4 @@
-.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align ingame college
+.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align ingame college slide-charts
 
 PYTHON ?= python3
 
@@ -35,7 +35,7 @@ sportsbook: sportsbook-backfill sportsbook-report
 
 # Alignment (Kalshi vs sportsbooks, same games and moments). SEASON=2026 or 2025.
 trade-sizes:
-	cd backend && .venv/bin/python -m app.alignment.trade_sizes --season $(SEASON) $(if $(SERIES),--series $(SERIES),)
+	cd backend && .venv/bin/python -m app.alignment.trade_sizes --season $(SEASON) $(if $(LEAGUE),--league $(LEAGUE),) $(if $(SERIES),--series $(SERIES),)
 
 align:
 	cd backend && .venv/bin/python -m app.alignment.pipeline --season $(SEASON)
@@ -47,3 +47,7 @@ ingame:
 # College football (NCAAF) alignment, one season. Needs data/odds_data.zip and Theo's raw Kalshi zip in data/.
 college:
 	cd backend && .venv/bin/python -m app.alignment.college --season $(or $(SEASON),2025)
+
+# Deck charts and stat-box numbers (Kalshi vs. the sportsbooks). LEAGUE=ncaaf (default) or nfl.
+slide-charts:
+	cd backend && .venv/bin/python -m app.alignment.slide_charts --league $(or $(LEAGUE),ncaaf)
