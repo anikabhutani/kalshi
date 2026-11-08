@@ -167,36 +167,68 @@ async def pull_market(get: Getter, ticker: str) -> tuple[pd.DataFrame, dict[str,
     return df, info
 
 
-def _progress_path(season: int, out: Path) -> Path:
+def _progress_path(season: int | str, out: Path) -> Path:
     return out / "trades" / str(season) / "_progress.json"
 
 
-async def pull_season(get: Getter, markets: pd.DataFrame, season: int, out: Path = OUT_DIR,
+async def pull_season(get: Getter | list[Getter], markets: pd.DataFrame, season: int | str, out: Path = OUT_DIR,
                       max_requests: int | None = None) -> dict[str, Any]:
-    """Pull every market not already saved. Saves each market as soon as it is done."""
+    """Pull every market not already saved. Saves each market as soon as it is done.
+
+    ``get`` may be a list of getters (one per client): the markets are then pulled concurrently, one
+    worker per getter. All workers share the caller's rate limiter, and the first error stops them all
+    (progress so far is written before the error is raised)."""
+    getters = get if isinstance(get, list) else [get]
     folder = out / "trades" / str(season)
     folder.mkdir(parents=True, exist_ok=True)
     prog_path = _progress_path(season, out)
     progress = json.loads(prog_path.read_text()) if prog_path.exists() else {"markets": {}}
     sent = 0
-
-    async def counted(path: str, params: dict[str, Any]) -> dict[str, Any] | None:
-        nonlocal sent
-        if max_requests is not None and sent >= max_requests:
-            raise Stopped(f"Stopped at the request cap ({max_requests}). Run again to continue.")
-        sent += 1
-        return await get(path, params)
-
+    finished = 0
     todo = [t for t in markets["ticker"] if not progress["markets"].get(t, {}).get("done")]
-    for i, ticker in enumerate(todo, 1):
-        df, info = await pull_market(counted, ticker)
-        df.to_csv(folder / f"{ticker}.csv.gz", index=False, compression="gzip")
-        progress["markets"][ticker] = {**info, "trades": len(df), "done": not info["truncated"],
-                                       "saved_at": datetime.now(UTC).isoformat(timespec="seconds")}
+    queue: asyncio.Queue[str] = asyncio.Queue()
+    for t in todo:
+        queue.put_nowait(t)
+
+    def save_progress() -> None:
         prog_path.write_text(json.dumps(progress, indent=2))
-        if i % 25 == 0 or i == len(todo):
-            print(f"  {i}/{len(todo)} markets, {sent} requests", flush=True)
-    return {"requests": sent, "markets_pulled": len(todo)}
+
+    async def worker(g: Getter) -> None:
+        nonlocal sent, finished
+
+        async def counted(path: str, params: dict[str, Any]) -> dict[str, Any] | None:
+            nonlocal sent
+            if max_requests is not None and sent >= max_requests:
+                raise Stopped(f"Stopped at the request cap ({max_requests}). Run again to continue.")
+            sent += 1
+            return await g(path, params)
+
+        while True:
+            try:
+                ticker = queue.get_nowait()
+            except asyncio.QueueEmpty:
+                return
+            df, info = await pull_market(counted, ticker)
+            df.to_csv(folder / f"{ticker}.csv.gz", index=False, compression="gzip")
+            progress["markets"][ticker] = {**info, "trades": len(df), "done": not info["truncated"],
+                                           "saved_at": datetime.now(UTC).isoformat(timespec="seconds")}
+            finished += 1
+            if finished % 100 == 0 or finished == len(todo):
+                save_progress()  # every 100 markets: rewriting a large file after each market is slow
+            if finished % 25 == 0 or finished == len(todo):
+                print(f"  {finished}/{len(todo)} markets, {sent} requests", flush=True)
+
+    tasks = [asyncio.create_task(worker(g)) for g in getters]
+    try:
+        await asyncio.gather(*tasks)
+    except BaseException:
+        for t in tasks:
+            t.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+        raise
+    finally:
+        save_progress()
+    return {"requests": sent, "markets_pulled": finished}
 
 
 # --------------------------------------------------------------------------------------
@@ -215,8 +247,14 @@ def _pct(values: np.ndarray, weights: np.ndarray | None = None) -> dict[str, flo
     return {f"p{p}": float(v[np.searchsorted(cum, p / 100)]) for p in PERCENTILES}
 
 
+def _groups(markets: pd.DataFrame, league: str) -> tuple[tuple[str, ...], str]:
+    if league in LEAGUES:
+        return LEAGUES[league][0], LEAGUES[league][1]
+    return tuple(sorted(markets["series"].dropna().unique())), "all markets"
+
+
 def summarize(trades: pd.DataFrame, markets: pd.DataFrame, league: str = "nfl") -> dict[str, Any]:
-    series, all_label, _ = LEAGUES[league]
+    series, all_label = _groups(markets, league)
     t = trades.merge(markets[["ticker", "series"]], on="ticker", how="left")
     out: dict[str, Any] = {}
     for label, sub in ((all_label, t), *((s, t[t["series"] == s]) for s in series)):
@@ -241,7 +279,7 @@ def load_saved(season: int, markets: pd.DataFrame, out: Path = OUT_DIR) -> pd.Da
 
 def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any], stats: dict[str, Any],
            league: str = "nfl") -> list[dict]:
-    all_label = LEAGUES[league][1]
+    all_label = _groups(markets, league)[1]
     out = []
     p = progress.get("markets", {})
     missing = [t for t in markets["ticker"] if not p.get(t, {}).get("done")]
@@ -277,8 +315,8 @@ def checks(trades: pd.DataFrame, markets: pd.DataFrame, progress: dict[str, Any]
     return out
 
 
-def report(season: int, markets: pd.DataFrame, out: Path | None = None, league: str = "nfl") -> int:
-    out = out or LEAGUES[league][2]
+def report(season: int | str, markets: pd.DataFrame, out: Path | None = None, league: str = "nfl") -> int:
+    out = out or (LEAGUES[league][2] if league in LEAGUES else OUT_DIR / "extra" / str(season))
     trades = load_saved(season, markets, out)
     if trades.empty:
         print(f"No saved trades for {season} in {out / 'trades' / str(season)}; run without --from-saved.",
@@ -301,8 +339,11 @@ def report(season: int, markets: pd.DataFrame, out: Path | None = None, league: 
 def _markdown(r: dict[str, Any]) -> str:
     def fmt(x: float | None) -> str:
         return "-" if x is None else f"{x:g}"
-    league = {"nfl": "NFL", "ncaaf": "college football (game-winner markets of the matched games)"}[r.get("league", "nfl")]
-    lines = [f"# Kalshi {league} trade sizes, {r['season']} season (contracts)", "",
+    league = {"nfl": "NFL", "ncaaf": "college football (game-winner markets of the matched games)"}.get(
+        r.get("league", "nfl"), "")
+    title = f"# Kalshi {league} trade sizes, {r['season']} season (contracts)" if league else \
+        f"# Kalshi trade sizes, market list {r['season']} (contracts)"
+    lines = [title, "",
              f"{r['markets']} markets; percentiles use {r['percentile_method']}.", "",
              "| Markets | Block trades | Trades | Median | p75 | p90 | Median (per contract) | p75 (pc) | p90 (pc) |",
              "|---|---|---|---|---|---|---|---|---|"]
@@ -335,7 +376,8 @@ def client_getter(client: Any) -> Getter:
     return get
 
 
-async def _live(season: int, markets: pd.DataFrame, max_requests: int | None, out: Path = OUT_DIR) -> int:
+async def _live(season: int | str, markets: pd.DataFrame, max_requests: int | None, out: Path = OUT_DIR,
+                concurrency: int = 1, rps: float | None = None) -> int:
     from app.config import get_settings
     from app.db import Database
     from app.errors import RateLimited, ReconError
@@ -353,32 +395,58 @@ async def _live(season: int, markets: pd.DataFrame, max_requests: int | None, ou
     secrets = [config.kalshi_key_id.get_secret_value()] if config.kalshi_key_id else []
     evidence = EvidenceLog(db, config.raw_dir, secrets)
     current = settings.get()
-    client = KalshiClient(config, spec, settings, evidence, _NoJobs(),  # type: ignore[arg-type]
-                          TokenBucket(current.rate_limit_rps, current.rate_limit_burst))
+    rate = min(rps, 20.0) if rps else current.rate_limit_rps
+    bucket = TokenBucket(rate, max(current.rate_limit_burst, concurrency))  # one shared limit for all workers
+    clients = [KalshiClient(config, spec, settings, evidence, _NoJobs(), bucket)  # type: ignore[arg-type]
+               for _ in range(max(1, concurrency))]
+    client = clients[0]
+    print(f"{len(clients)} worker(s), at most {rate:g} requests/s", flush=True)
 
     started = time.time()
     try:
-        done = await pull_season(client_getter(client), markets, season, out=out, max_requests=max_requests)
+        done = await pull_season([client_getter(c) for c in clients], markets, season, out=out,
+                                 max_requests=max_requests)
         print(f"Pulled {done['markets_pulled']} markets with {done['requests']} requests in "
               f"{time.time() - started:.0f} s.")
     except (Stopped, RateLimited, ReconError) as exc:
         print(f"Stopped: {exc}. Progress is saved; run the same command again to continue.", file=sys.stderr)
         return 2
     finally:
-        await client.aclose()
+        for c in clients:
+            await c.aclose()
     return 0
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Kalshi trade sizes (median, p75, p90) for one season.")
-    parser.add_argument("--season", type=int, required=True)
+    parser.add_argument("--season", type=int, default=None, help="season (not needed with --markets-file)")
     parser.add_argument("--league", choices=list(LEAGUES), default="nfl",
                         help="nfl (Task 3 markets) or ncaaf (game-winner markets of the college crosswalk)")
     parser.add_argument("--series", nargs="+", default=None, choices=list(SERIES), help="NFL series to include")
     parser.add_argument("--max-requests", type=int, default=None, help="stop after this many requests")
+    parser.add_argument("--markets-file", type=Path, default=None,
+                        help="CSV of markets to pull (columns ticker, series[, game_date]); needs --label")
+    parser.add_argument("--label", default=None, help="name for a --markets-file pull (output folder)")
+    parser.add_argument("--concurrency", type=int, default=1, help="parallel workers sharing one rate limit")
+    parser.add_argument("--rps", type=float, default=None, help="requests per second for this run (max 20)")
     parser.add_argument("--from-saved", action="store_true", help="only recompute from saved trades")
     args = parser.parse_args(argv)
     out = LEAGUES[args.league][2]
+    if args.markets_file is None and args.season is None:
+        print("--season is required (or --markets-file with --label)", file=sys.stderr)
+        return 2
+    if args.markets_file is not None:
+        if not args.label:
+            print("--markets-file needs --label", file=sys.stderr)
+            return 2
+        markets = pd.read_csv(args.markets_file)
+        out = OUT_DIR / "extra" / args.label
+        print(f"{len(markets)} markets: " + ", ".join(f"{s} {n}" for s, n in markets["series"].value_counts().items()))
+        if not args.from_saved:
+            code = asyncio.run(_live(args.label, markets, args.max_requests, out, args.concurrency, args.rps))
+            if code:
+                return code
+        return report(args.label, markets, out, league="custom")
     if args.league == "ncaaf":
         markets = college_markets(args.season)
         if markets.empty:
@@ -392,7 +460,7 @@ def main(argv: list[str] | None = None) -> int:
             return 2
     print(f"{len(markets)} markets: " + ", ".join(f"{s} {n}" for s, n in markets["series"].value_counts().items()))
     if not args.from_saved:
-        code = asyncio.run(_live(args.season, markets, args.max_requests, out))
+        code = asyncio.run(_live(args.season, markets, args.max_requests, out, args.concurrency, args.rps))
         if code:
             return code
     return report(args.season, markets, out, args.league)

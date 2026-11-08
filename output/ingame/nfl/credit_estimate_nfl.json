@@ -1,0 +1,38 @@
+{
+  "league": "nfl",
+  "credits_per_call": 10,
+  "budget_credits": 30000,
+  "by_season": {
+    "2025": {
+      "swings_kept_before_budget": 116,
+      "entries_before_dedupe": 232,
+      "unique_timestamps_before_budget": 215,
+      "swings_dropped_for_budget": 0,
+      "swings_on_list": 116,
+      "unique_timestamps": 215,
+      "credits": 2150
+    },
+    "2026": {
+      "swings_kept_before_budget": 51,
+      "entries_before_dedupe": 102,
+      "unique_timestamps_before_budget": 98,
+      "swings_dropped_for_budget": 0,
+      "swings_on_list": 51,
+      "unique_timestamps": 98,
+      "credits": 980
+    }
+  },
+  "total": {
+    "swings_kept_before_budget": 167,
+    "entries_before_dedupe": 334,
+    "unique_timestamps_before_budget": 313,
+    "credits_before_budget": 3130,
+    "swings_dropped_for_budget": 0,
+    "swings_on_list": 167,
+    "entries_on_list": 334,
+    "unique_timestamps": 313,
+    "credits": 3130,
+    "calls_shared_by_2plus_swings": 20
+  },
+  "assumes": "one region (us) and one market (h2h) per historical call; 10 credits per call"
+}

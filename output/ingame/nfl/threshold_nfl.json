@@ -1,0 +1,177 @@
+{
+  "league": "nfl",
+  "seasons": [
+    2025,
+    2026
+  ],
+  "load": {
+    "2025": {
+      "kalshi_events": 283,
+      "matched_to_nflverse": 283,
+      "nflverse_games": 285,
+      "nflverse_games_without_kalshi_event": 2,
+      "unmatched_reasons": {}
+    },
+    "2026": {
+      "kalshi_events": 170,
+      "matched_to_nflverse": 121,
+      "nflverse_games": 121,
+      "nflverse_games_without_kalshi_event": 0,
+      "unmatched_reasons": {
+        "no nflverse game (preseason or not played)": 49
+      }
+    }
+  },
+  "games_used": 376,
+  "games_used_by_season": {
+    "2025": 282,
+    "2026": 94
+  },
+  "games_with_good_timestamps": 372,
+  "quiet_minutes": 20748,
+  "k": {
+    "p97.5": 3.3725,
+    "p99": 4.7214,
+    "p99.5": 6.1553
+  },
+  "k_main": "p99",
+  "threshold_points_median_game": 21.0,
+  "sigma_game": {
+    "min": 1.0,
+    "median": 4.448,
+    "max": 10.378
+  },
+  "sigma_by_source": {
+    "good timestamps (quiet minutes)": 4.448,
+    "no good timestamps (all minutes)": 2.595
+  },
+  "games_floor": [
+    "KXNFLGAME-25SEP28NOBUF",
+    "KXNFLGAME-25SEP07CARJAC"
+  ],
+  "games_league_median": [
+    "KXNFLGAME-26JAN18SFSEA",
+    "KXNFLGAME-26JAN04TENJAC",
+    "KXNFLGAME-26JAN04NYJBUF",
+    "KXNFLGAME-26JAN04MIANE",
+    "KXNFLGAME-26JAN04LACDEN",
+    "KXNFLGAME-25DEC28NENYJ",
+    "KXNFLGAME-25DEC21BUFCLE",
+    "KXNFLGAME-25DEC14TENSF",
+    "KXNFLGAME-25DEC14NYJJAC",
+    "KXNFLGAME-25DEC14LVPHI",
+    "KXNFLGAME-25DEC14ARIHOU",
+    "KXNFLGAME-25DEC07LAARI",
+    "KXNFLGAME-25DEC07MIANYJ",
+    "KXNFLGAME-25DEC07INDJAC",
+    "KXNFLGAME-25DEC01NYGNE",
+    "KXNFLGAME-25NOV30JACTEN",
+    "KXNFLGAME-25NOV23TBLA",
+    "KXNFLGAME-25NOV23SEATEN",
+    "KXNFLGAME-25NOV17DALLV",
+    "KXNFLGAME-25NOV13NYJNE",
+    "KXNFLGAME-25NOV09DETWAS",
+    "KXNFLGAME-25NOV09ARISEA",
+    "KXNFLGAME-25NOV02NOLA",
+    "KXNFLGAME-25OCT26TENIND",
+    "KXNFLGAME-25OCT26BUFCAR",
+    "KXNFLGAME-25OCT19NOCHI",
+    "KXNFLGAME-25OCT19LVKC",
+    "KXNFLGAME-25OCT05DETCIN",
+    "KXNFLGAME-25OCT05TENARI",
+    "KXNFLGAME-25OCT05LVIND",
+    "KXNFLGAME-25OCT05HOUBAL",
+    "KXNFLGAME-25SEP21NOSEA",
+    "KXNFLGAME-25SEP21INDTEN",
+    "KXNFLGAME-25SEP14CHIDET",
+    "KXNFLGAME-25SEP14BUFNYJ",
+    "KXNFLGAME-25SEP07MIAIND",
+    "KXNFLGAME-26OCT11HOUTEN",
+    "KXNFLGAME-26OCT04TENBAL",
+    "KXNFLGAME-26SEP27ARISF",
+    "KXNFLGAME-26SEP20MIASF",
+    "KXNFLGAME-26SEP17DETBUF",
+    "KXNFLGAME-26SEP13TBCIN",
+    "KXNFLGAME-26SEP13CLEJAC",
+    "KXNFLGAME-26SEP13BALIND"
+  ],
+  "sensitivity": {
+    "p97.5": {
+      "k": 3.3725,
+      "swings": 729,
+      "kept": 371,
+      "catch_rate_3min": 0.2487,
+      "match_rate_3min": 0.7319
+    },
+    "p99": {
+      "k": 4.7214,
+      "swings": 380,
+      "kept": 167,
+      "catch_rate_3min": 0.1318,
+      "match_rate_3min": 0.7371
+    },
+    "p99.5": {
+      "k": 6.1553,
+      "swings": 231,
+      "kept": 90,
+      "catch_rate_3min": 0.0694,
+      "match_rate_3min": 0.6892
+    }
+  },
+  "steady_range_points": 2.0,
+  "n_med": {
+    "2025": {
+      "n": 24,
+      "source": "trade_sizes_2026.json, KXNFLGAME, median per trade excl. blocks (23.93) (no 2025 file: 2026 sizes)"
+    },
+    "2026": {
+      "n": 24,
+      "source": "trade_sizes_2026.json, KXNFLGAME, median per trade excl. blocks (23.93)"
+    }
+  },
+  "checks": {
+    "within_3_min": {
+      "catch_rate": 0.1318,
+      "plays_checked": 1685,
+      "caught": 222,
+      "by_type": {
+        "touchdown": {
+          "caught": 141,
+          "plays": 1128
+        },
+        "turnover": {
+          "caught": 81,
+          "plays": 557
+        }
+      },
+      "wp_source": {
+        "play_by_play": 2745,
+        "kalshi_mid_fallback": 0
+      },
+      "match_rate": 0.7371,
+      "swings_checked": 369
+    },
+    "within_5_min": {
+      "catch_rate": 0.1691,
+      "plays_checked": 1685,
+      "caught": 285,
+      "by_type": {
+        "touchdown": {
+          "caught": 170,
+          "plays": 1128
+        },
+        "turnover": {
+          "caught": 115,
+          "plays": 557
+        }
+      },
+      "wp_source": {
+        "play_by_play": 2745,
+        "kalshi_mid_fallback": 0
+      },
+      "match_rate": 0.8997,
+      "swings_checked": 369
+    }
+  },
+  "dry_run": false
+}

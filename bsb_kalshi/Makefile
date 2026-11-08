@@ -1,4 +1,4 @@
-.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align ingame college slide-charts
+.PHONY: install dev backend frontend test build backfill sportsbook-backfill sportsbook-report sportsbook trade-sizes align ingame college slide-charts trade-list
 
 PYTHON ?= python3
 
@@ -51,3 +51,19 @@ college:
 # Deck charts and stat-box numbers (Kalshi vs. the sportsbooks). LEAGUE=ncaaf (default) or nfl.
 slide-charts:
 	cd backend && .venv/bin/python -m app.alignment.slide_charts --league $(or $(LEAGUE),ncaaf)
+
+# Trades for a list of markets (data/alignment/extra/markets/$(LABEL).csv), several workers, one shared rate limit.
+trade-list:
+	cd backend && .venv/bin/python -m app.alignment.trade_sizes --markets-file ../data/alignment/extra/markets/$(LABEL).csv --label $(LABEL) --concurrency $(or $(CONCURRENCY),1) $(if $(RPS),--rps $(RPS),)
+
+# Task 7 in-game swings (college). Pull needs internet, your Kalshi key and CFBD_API_KEY in .env.
+ingame-pull:
+	cd backend && .venv/bin/python -m app.ingame.swing_data pull --season $(or $(SEASON),2026)
+
+# Task 7 NFL (2025 + 2026): Task 3 candles -> nflverse -> swings -> timestamp list. Run make task3 first for new games.
+swings-nfl:
+	cd backend && .venv/bin/python -m app.ingame.swing_data export-task3
+	cd backend && .venv/bin/python -m app.ingame.swing_data fill-nfl-zip
+	cd backend && .venv/bin/python -m app.ingame.swing_data pull-nflverse
+	cd backend && .venv/bin/python -m app.ingame.swings --league nfl --seasons 2025 2026 $(if $(STEADY),--steady-range $(STEADY),)
+	cd backend && .venv/bin/python -m app.ingame.timestamp_list --league nfl

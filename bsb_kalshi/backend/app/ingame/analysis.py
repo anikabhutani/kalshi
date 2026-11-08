@@ -549,7 +549,7 @@ def run_checks(season: int, markets: pd.DataFrame, per_market: dict[str, dict[st
                       "Negative spreads or one-sided books entering the cost numbers."))
         nmin = min(cal["games_by_checkpoint"].values()) if cal["games_by_checkpoint"] else 0
         out.append(_c("calibration_sample", "Enough games at every checkpoint", "warn" if nmin < 30 else "pass",
-                      f"Games per checkpoint: " + ", ".join(f"{k:+d} min {v}" for k, v in cal["games_by_checkpoint"].items()) + ".",
+                      "Games per checkpoint: " + ", ".join(f"{k:+d} min {v}" for k, v in cal["games_by_checkpoint"].items()) + ".",
                       "Reading accuracy differences into a handful of games."))
     else:
         out.append(_c("no_lookahead", "Prices come from at or before each moment", "skip", "No candles for this season.", ""))

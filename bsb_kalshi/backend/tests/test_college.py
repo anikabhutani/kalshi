@@ -191,3 +191,33 @@ def test_college_trade_size_report_and_n_values(tmp_path):
     assert "2025 sizes used for 2026" in cm.n_values(2026, tmp_path, groups=("KXNCAAFGAME",))[1]
     # an NFL file has no college groups: not used for college
     assert cm.n_values(2025, tmp_path, groups=("KXNFLGAME", "all NFL markets"))[1].startswith("placeholder")
+
+
+def test_market_list_pull_runs_concurrently_and_reports(tmp_path):
+    import asyncio
+    from app.alignment import trade_sizes as ts
+
+    markets = pd.DataFrame({"ticker": [f"KXNCAAFSPREAD-25SEP06AB-A{i}" for i in range(6)],
+                            "series": ["KXNCAAFSPREAD"] * 3 + ["KXNCAAFTOTAL"] * 3})
+    calls = []
+
+    def getter(name):
+        async def get(path, params):
+            calls.append((name, params["ticker"]))
+            await asyncio.sleep(0)
+            if path == "/historical/trades":
+                return None
+            n = int(params["ticker"][-1]) + 1
+            return {"trades": [{"trade_id": f"{params['ticker']}-{k}", "ticker": params["ticker"], "count_fp": "2",
+                                "yes_price_dollars": "0.5", "created_time": "2025-09-06T12:00:00Z"} for k in range(n)]}
+        return get
+
+    out = tmp_path / "extra" / "lst"
+    done = asyncio.run(ts.pull_season([getter("a"), getter("b"), getter("c")], markets, "lst", out=out))
+    assert done["markets_pulled"] == 6 and {n for n, _ in calls} == {"a", "b", "c"}  # all workers used
+    assert ts.report("lst", markets, out, league="custom") == 0
+    stats = json.loads((out / "trade_sizes_lst.json").read_text())["stats"]
+    assert set(stats) == {"all markets", "KXNCAAFSPREAD", "KXNCAAFTOTAL"}
+    assert stats["all markets"]["including block trades"]["trades"] == 21
+    # a rerun pulls nothing: every market is marked done
+    assert asyncio.run(ts.pull_season([getter("a")], markets, "lst", out=out))["markets_pulled"] == 0
