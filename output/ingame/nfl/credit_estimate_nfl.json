@@ -13,26 +13,26 @@
       "credits": 2150
     },
     "2026": {
-      "swings_kept_before_budget": 51,
-      "entries_before_dedupe": 102,
-      "unique_timestamps_before_budget": 98,
+      "swings_kept_before_budget": 67,
+      "entries_before_dedupe": 134,
+      "unique_timestamps_before_budget": 128,
       "swings_dropped_for_budget": 0,
-      "swings_on_list": 51,
-      "unique_timestamps": 98,
-      "credits": 980
+      "swings_on_list": 67,
+      "unique_timestamps": 128,
+      "credits": 1280
     }
   },
   "total": {
-    "swings_kept_before_budget": 167,
-    "entries_before_dedupe": 334,
-    "unique_timestamps_before_budget": 313,
-    "credits_before_budget": 3130,
+    "swings_kept_before_budget": 183,
+    "entries_before_dedupe": 366,
+    "unique_timestamps_before_budget": 343,
+    "credits_before_budget": 3430,
     "swings_dropped_for_budget": 0,
-    "swings_on_list": 167,
-    "entries_on_list": 334,
-    "unique_timestamps": 313,
-    "credits": 3130,
-    "calls_shared_by_2plus_swings": 20
+    "swings_on_list": 183,
+    "entries_on_list": 366,
+    "unique_timestamps": 343,
+    "credits": 3430,
+    "calls_shared_by_2plus_swings": 22
   },
   "assumes": "one region (us) and one market (h2h) per historical call; 10 credits per call"
 }
