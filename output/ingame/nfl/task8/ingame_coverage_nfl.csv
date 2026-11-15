@@ -1,0 +1,20 @@
+step,count
+swings on the list,187
+requests on the list,350
+requests with a raw file,350
+swing times (swing x before/after),374
+swing times with the event matched,374
+FanDuel: swing times with the book present,374
+FanDuel: ... and fresh (age <= 5 min),374
+FanDuel: ... and both teams priced,374
+FanDuel: ... and usable (all checks),346
+FanDuel: swings with a usable before-and-after pair,161
+DraftKings: swing times with the book present,374
+DraftKings: ... and fresh (age <= 5 min),374
+DraftKings: ... and both teams priced,374
+DraftKings: ... and usable (all checks),346
+DraftKings: swings with a usable before-and-after pair,161
+reason_code DraftKings: kalshi_mid_outside_10_90 (rows),56
+reason_code DraftKings: ok (rows),692
+reason_code FanDuel: kalshi_mid_outside_10_90 (rows),56
+reason_code FanDuel: ok (rows),692
