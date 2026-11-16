@@ -342,3 +342,10 @@ request_time_utc,slot_utc,odds_api_sport,league,request_ts,kinds,swing_ids,n_ent
 2026-11-08T19:53:00Z,2026-11-08T19:50:00Z,americanfootball_nfl,nfl,1794167580,after,2026_09_NYJ_KC-S04,1,1
 2026-11-08T20:21:00Z,2026-11-08T20:20:00Z,americanfootball_nfl,nfl,1794169260,before,2026_09_DEN_CAR-S02,1,1
 2026-11-08T20:32:00Z,2026-11-08T20:30:00Z,americanfootball_nfl,nfl,1794169920,after,2026_09_DEN_CAR-S02,1,1
+2026-11-08T21:06:00Z,2026-11-08T21:05:00Z,americanfootball_nfl,nfl,1794171960,before,2026_09_HOU_LAC-S01,1,1
+2026-11-08T21:17:00Z,2026-11-08T21:15:00Z,americanfootball_nfl,nfl,1794172620,after,2026_09_HOU_LAC-S01,1,1
+2026-11-08T21:28:00Z,2026-11-08T21:25:00Z,americanfootball_nfl,nfl,1794173280,before,2026_09_LV_SF-S01,1,1
+2026-11-08T21:32:00Z,2026-11-08T21:30:00Z,americanfootball_nfl,nfl,1794173520,after+before,2026_09_ARI_SEA-S01|2026_09_LV_SF-S01,2,2
+2026-11-08T21:39:00Z,2026-11-08T21:35:00Z,americanfootball_nfl,nfl,1794173940,after,2026_09_ARI_SEA-S01,1,1
+2026-11-08T21:49:00Z,2026-11-08T21:45:00Z,americanfootball_nfl,nfl,1794174540,before,2026_09_ARI_SEA-S02,1,1
+2026-11-08T22:04:00Z,2026-11-08T22:00:00Z,americanfootball_nfl,nfl,1794175440,after,2026_09_ARI_SEA-S02,1,1

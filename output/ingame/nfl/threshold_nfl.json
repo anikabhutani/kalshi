@@ -13,26 +13,26 @@
       "unmatched_reasons": {}
     },
     "2026": {
-      "kalshi_events": 199,
-      "matched_to_nflverse": 130,
-      "nflverse_games": 130,
+      "kalshi_events": 212,
+      "matched_to_nflverse": 136,
+      "nflverse_games": 136,
       "nflverse_games_without_kalshi_event": 0,
       "unmatched_reasons": {
-        "no nflverse game (preseason or not played)": 69
+        "no nflverse game (preseason or not played)": 76
       }
     }
   },
-  "games_used": 412,
+  "games_used": 418,
   "games_used_by_season": {
     "2025": 282,
-    "2026": 130
+    "2026": 136
   },
-  "games_with_good_timestamps": 408,
-  "quiet_minutes": 22851,
+  "games_with_good_timestamps": 414,
+  "quiet_minutes": 23209,
   "k": {
     "p97.5": 3.3725,
     "p99": 4.7214,
-    "p99.5": 6.2053
+    "p99.5": 6.2044
   },
   "k_main": "p99",
   "threshold_points_median_game": 21.0,
@@ -47,7 +47,11 @@
   },
   "games_floor": [
     "KXNFLGAME-25SEP28NOBUF",
-    "KXNFLGAME-25SEP07CARJAC"
+    "KXNFLGAME-25SEP07CARJAC",
+    "KXNFLGAME-26NOV08LVSF",
+    "KXNFLGAME-26NOV08GBNE",
+    "KXNFLGAME-26NOV08ARISEA",
+    "KXNFLGAME-26NOV08HOULAC"
   ],
   "games_league_median": [
     "KXNFLGAME-26JAN18SFSEA",
@@ -101,24 +105,24 @@
   "sensitivity": {
     "p97.5": {
       "k": 3.3725,
-      "swings": 792,
-      "kept": 414,
-      "catch_rate_3min": 0.2499,
-      "match_rate_3min": 0.7344
+      "swings": 799,
+      "kept": 417,
+      "catch_rate_3min": 0.2483,
+      "match_rate_3min": 0.7316
     },
     "p99": {
       "k": 4.7214,
-      "swings": 405,
-      "kept": 183,
-      "catch_rate_3min": 0.1319,
-      "match_rate_3min": 0.7462
+      "swings": 412,
+      "kept": 187,
+      "catch_rate_3min": 0.1321,
+      "match_rate_3min": 0.7431
     },
     "p99.5": {
-      "k": 6.2053,
-      "swings": 240,
-      "kept": 96,
-      "catch_rate_3min": 0.0684,
-      "match_rate_3min": 0.697
+      "k": 6.2044,
+      "swings": 247,
+      "kept": 101,
+      "catch_rate_3min": 0.0687,
+      "match_rate_3min": 0.6891
     }
   },
   "steady_range_points": 2.0,
@@ -134,46 +138,46 @@
   },
   "checks": {
     "within_3_min": {
-      "catch_rate": 0.1319,
-      "plays_checked": 1857,
-      "caught": 245,
+      "catch_rate": 0.1321,
+      "plays_checked": 1877,
+      "caught": 248,
       "by_type": {
         "touchdown": {
-          "caught": 158,
-          "plays": 1243
+          "caught": 161,
+          "plays": 1254
         },
         "turnover": {
           "caught": 87,
-          "plays": 614
+          "plays": 623
         }
       },
       "wp_source": {
-        "play_by_play": 3011,
+        "play_by_play": 3065,
         "kalshi_mid_fallback": 0
       },
-      "match_rate": 0.7462,
-      "swings_checked": 394
+      "match_rate": 0.7431,
+      "swings_checked": 401
     },
     "within_5_min": {
-      "catch_rate": 0.1675,
-      "plays_checked": 1857,
-      "caught": 311,
+      "catch_rate": 0.1678,
+      "plays_checked": 1877,
+      "caught": 315,
       "by_type": {
         "touchdown": {
-          "caught": 190,
-          "plays": 1243
+          "caught": 194,
+          "plays": 1254
         },
         "turnover": {
           "caught": 121,
-          "plays": 614
+          "plays": 623
         }
       },
       "wp_source": {
-        "play_by_play": 3011,
+        "play_by_play": 3065,
         "kalshi_mid_fallback": 0
       },
-      "match_rate": 0.9061,
-      "swings_checked": 394
+      "match_rate": 0.9052,
+      "swings_checked": 401
     }
   },
   "dry_run": false

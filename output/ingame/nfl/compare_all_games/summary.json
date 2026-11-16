@@ -1,0 +1,281 @@
+{
+  "live_rows": 56456,
+  "calm_rows": 22624,
+  "calm_share": 0.4007,
+  "games_with_odds": 421,
+  "games_with_calm_rows": 416,
+  "exclusions": {
+    "Kalshi moved > 2 points in the window": 23172,
+    "fair price outside 10-90": 8902,
+    "Kalshi quote filled (one-sided) in the window": 886,
+    "no Kalshi data for the game": 456,
+    "no Kalshi minute at the snapshot": 348,
+    "Kalshi spread > 5c in the window": 68
+  },
+  "book_age_sec_median": 22.0,
+  "extra_cost_median": {
+    "FanDuel": {
+      "estimate": 0.1934,
+      "ci95": [
+        0.1795,
+        0.2016
+      ],
+      "rows": 11350,
+      "games": 416,
+      "excludes_zero": true
+    },
+    "DraftKings": {
+      "estimate": 0.2042,
+      "ci95": [
+        0.1976,
+        0.2098
+      ],
+      "rows": 11274,
+      "games": 416,
+      "excludes_zero": true
+    }
+  },
+  "extra_cost_mean": {
+    "FanDuel": {
+      "estimate": -0.0393,
+      "ci95": [
+        -0.1223,
+        0.0174
+      ],
+      "rows": 11350,
+      "games": 416,
+      "excludes_zero": false
+    },
+    "DraftKings": {
+      "estimate": 0.0982,
+      "ci95": [
+        0.0668,
+        0.1252
+      ],
+      "rows": 11274,
+      "games": 416,
+      "excludes_zero": true
+    }
+  },
+  "cost_per_10_median": {
+    "FanDuel": 0.5625,
+    "DraftKings": 0.5675,
+    "Kalshi": 0.4523
+  },
+  "share_rows_book_cheaper_than_kalshi_FanDuel": 0.3618,
+  "share_rows_book_cheaper_than_kalshi_DraftKings": 0.3224,
+  "kalshi_spread_median_c": 1.0,
+  "by_season": {
+    "2025": {
+      "FanDuel": {
+        "estimate": 0.1739,
+        "ci95": [
+          0.1656,
+          0.1921
+        ],
+        "rows": 7122,
+        "games": 280,
+        "excludes_zero": true
+      },
+      "DraftKings": {
+        "estimate": 0.188,
+        "ci95": [
+          0.1739,
+          0.1908
+        ],
+        "rows": 7138,
+        "games": 280,
+        "excludes_zero": true
+      }
+    },
+    "2026": {
+      "FanDuel": {
+        "estimate": 0.2139,
+        "ci95": [
+          0.1988,
+          0.2278
+        ],
+        "rows": 4228,
+        "games": 136,
+        "excludes_zero": true
+      },
+      "DraftKings": {
+        "estimate": 0.2338,
+        "ci95": [
+          0.2272,
+          0.2432
+        ],
+        "rows": 4136,
+        "games": 136,
+        "excludes_zero": true
+      }
+    }
+  },
+  "extra_cost_median_book_devig_ruler": {
+    "FanDuel": {
+      "estimate": 0.1942,
+      "ci95": [
+        0.1772,
+        0.2027
+      ],
+      "rows": 11350,
+      "games": 416,
+      "excludes_zero": true
+    },
+    "DraftKings": {
+      "estimate": 0.2032,
+      "ci95": [
+        0.2,
+        0.2083
+      ],
+      "rows": 11274,
+      "games": 416,
+      "excludes_zero": true
+    }
+  },
+  "book_devig_ruler_by_fair_price": {
+    "[10, 20)": {
+      "FanDuel": -0.4819,
+      "DraftKings": -0.1861
+    },
+    "[20, 30)": {
+      "FanDuel": -0.212,
+      "DraftKings": 0.0513
+    },
+    "[30, 40)": {
+      "FanDuel": -0.0272,
+      "DraftKings": 0.1168
+    },
+    "[40, 50)": {
+      "FanDuel": 0.1164,
+      "DraftKings": 0.2014
+    },
+    "[50, 60)": {
+      "FanDuel": 0.132,
+      "DraftKings": 0.1309
+    },
+    "[60, 70)": {
+      "FanDuel": 0.2304,
+      "DraftKings": 0.2078
+    },
+    "[70, 80)": {
+      "FanDuel": 0.3496,
+      "DraftKings": 0.2854
+    },
+    "[80, 90)": {
+      "FanDuel": 0.4273,
+      "DraftKings": 0.321
+    }
+  },
+  "book_overround_median": {
+    "DraftKings": 0.0611,
+    "FanDuel": 0.06
+  },
+  "by_minutes_since_kickoff": {
+    "0-60 min": {
+      "FanDuel": 0.1893,
+      "DraftKings": 0.1999,
+      "rows": 9132
+    },
+    "60-120 min": {
+      "FanDuel": 0.1942,
+      "DraftKings": 0.205,
+      "rows": 9364
+    },
+    "120-180 min": {
+      "FanDuel": 0.2104,
+      "DraftKings": 0.2083,
+      "rows": 3778
+    },
+    "180+ min": {
+      "FanDuel": 0.1558,
+      "DraftKings": 0.2339,
+      "rows": 350
+    }
+  },
+  "swing_pairs": {
+    "rows": 1480,
+    "usable_rows": 972,
+    "dropped_not_calm": 488,
+    "dropped_stale_after": 20,
+    "by_book": {
+      "FanDuel": {
+        "before": {
+          "estimate": 0.1776,
+          "ci95": [
+            0.1596,
+            0.2059
+          ],
+          "rows": 284,
+          "games": 101,
+          "excludes_zero": true
+        },
+        "after": {
+          "estimate": 0.2238,
+          "ci95": [
+            0.1731,
+            0.2339
+          ],
+          "rows": 206,
+          "games": 81,
+          "excludes_zero": true
+        },
+        "paired_after_minus_before": {
+          "estimate": -0.019,
+          "ci95": [
+            -0.1011,
+            0.0613
+          ],
+          "rows": 154,
+          "games": 61,
+          "excludes_zero": false
+        }
+      },
+      "DraftKings": {
+        "before": {
+          "estimate": 0.1694,
+          "ci95": [
+            0.1472,
+            0.209
+          ],
+          "rows": 282,
+          "games": 100,
+          "excludes_zero": true
+        },
+        "after": {
+          "estimate": 0.1838,
+          "ci95": [
+            0.1621,
+            0.2006
+          ],
+          "rows": 200,
+          "games": 78,
+          "excludes_zero": true
+        },
+        "paired_after_minus_before": {
+          "estimate": -0.0063,
+          "ci95": [
+            -0.0516,
+            0.0378
+          ],
+          "rows": 150,
+          "games": 59,
+          "excludes_zero": false
+        }
+      }
+    }
+  },
+  "suspensions": {
+    "expected_game_snapshots": 15341,
+    "FanDuel": {
+      "missing_share_all": 0.0761,
+      "missing_share_first_snapshot_after_swing": 0.0,
+      "snapshots_after_swing": 187
+    },
+    "DraftKings": {
+      "missing_share_all": 0.0842,
+      "missing_share_first_snapshot_after_swing": 0.0,
+      "snapshots_after_swing": 187
+    }
+  }
+}
