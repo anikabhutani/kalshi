@@ -1,0 +1,5 @@
+.env
+data/
+__pycache__/
+# robustness reruns: the minute tables repeat the main ones
+output/*/kalshi_minutes_*.csv

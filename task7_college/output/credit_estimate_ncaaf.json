@@ -1,0 +1,40 @@
+{
+  "league": "ncaaf",
+  "odds_api_sport": "americanfootball_ncaaf",
+  "k": "p99",
+  "credits_per_call": 10,
+  "budget_credits": 18000,
+  "by_season": {
+    "2025": {
+      "swings_kept_before_budget": 193,
+      "entries_before_dedupe": 386,
+      "unique_timestamps_before_budget": 350,
+      "swings_dropped_for_budget": 0,
+      "swings_on_list": 193,
+      "unique_timestamps": 350,
+      "credits": 3500
+    },
+    "2026": {
+      "swings_kept_before_budget": 289,
+      "entries_before_dedupe": 578,
+      "unique_timestamps_before_budget": 498,
+      "swings_dropped_for_budget": 0,
+      "swings_on_list": 289,
+      "unique_timestamps": 498,
+      "credits": 4980
+    }
+  },
+  "total": {
+    "swings_kept_before_budget": 482,
+    "entries_before_dedupe": 964,
+    "unique_timestamps_before_budget": 848,
+    "credits_before_budget": 8480,
+    "swings_dropped_for_budget": 0,
+    "swings_on_list": 482,
+    "entries_on_list": 964,
+    "unique_timestamps": 848,
+    "credits": 8480,
+    "calls_shared_by_2plus_swings": 105
+  },
+  "assumes": "one region (us) and one market (h2h) per historical call; 10 credits per call"
+}
