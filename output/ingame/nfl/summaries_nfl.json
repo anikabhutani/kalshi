@@ -1,0 +1,268 @@
+{
+  "all": {
+    "swings_found": 412,
+    "swings_kept": 187,
+    "dropped_by_reason": {
+      "no steady before time within 20 min": 114,
+      "no steady after time within 20 min": 65,
+      "move reversed: settled change under half the threshold": 39,
+      "next swing starts before the after time": 4,
+      "previous swing is after the before time": 3
+    },
+    "median_minutes_to_settle_kept": 5.0,
+    "minutes_to_settle_kept_p25_p75": [
+      4.0,
+      8.0
+    ],
+    "median_minutes_to_settle_all_with_after": 6.0,
+    "median_cost_per_10": {
+      "before": 0.4447,
+      "after": 0.4576
+    },
+    "median_spread_c": {
+      "before": 1.0,
+      "after": 1.0
+    },
+    "by_swing_size": {
+      "<10 pts": {
+        "swings": 40,
+        "median_cost_before": 0.4866,
+        "median_cost_after": 0.4306,
+        "median_minutes_to_settle": 4.5
+      },
+      "10-20 pts": {
+        "swings": 84,
+        "median_cost_before": 0.4478,
+        "median_cost_after": 0.4569,
+        "median_minutes_to_settle": 5.0
+      },
+      "20-30 pts": {
+        "swings": 47,
+        "median_cost_before": 0.4391,
+        "median_cost_after": 0.4697,
+        "median_minutes_to_settle": 6.0
+      },
+      "30+ pts": {
+        "swings": 16,
+        "median_cost_before": 0.4492,
+        "median_cost_after": 0.4348,
+        "median_minutes_to_settle": 6.5
+      }
+    },
+    "by_play_type": {
+      "touchdown": {
+        "swings": 101,
+        "median_cost_before": 0.4348,
+        "median_cost_after": 0.4576,
+        "median_abs_move": 17.0,
+        "median_minutes_to_settle": 5.0
+      },
+      "turnover": {
+        "swings": 39,
+        "median_cost_before": 0.4523,
+        "median_cost_after": 0.4538,
+        "median_abs_move": 15.0,
+        "median_minutes_to_settle": 6.0
+      },
+      "field_goal": {
+        "swings": 3,
+        "median_cost_before": 0.5508,
+        "median_cost_after": 0.4355,
+        "median_abs_move": 11.0,
+        "median_minutes_to_settle": 5.0
+      },
+      "failed_fourth": {
+        "swings": 9,
+        "median_cost_before": 0.4355,
+        "median_cost_after": 0.442,
+        "median_abs_move": 11.0,
+        "median_minutes_to_settle": 8.0
+      },
+      "no play within 3 min": {
+        "swings": 35
+      }
+    },
+    "paired_after_minus_before_cost_per_10": {
+      "median": -0.0071,
+      "mean": 0.0386,
+      "n": 374
+    }
+  },
+  "2025": {
+    "swings_found": 281,
+    "swings_kept": 116,
+    "dropped_by_reason": {
+      "no steady before time within 20 min": 84,
+      "no steady after time within 20 min": 47,
+      "move reversed: settled change under half the threshold": 28,
+      "next swing starts before the after time": 4,
+      "previous swing is after the before time": 2
+    },
+    "median_minutes_to_settle_kept": 5.0,
+    "minutes_to_settle_kept_p25_p75": [
+      4.0,
+      9.0
+    ],
+    "median_minutes_to_settle_all_with_after": 6.0,
+    "median_cost_per_10": {
+      "before": 0.4523,
+      "after": 0.4648
+    },
+    "median_spread_c": {
+      "before": 1.0,
+      "after": 1.0
+    },
+    "by_swing_size": {
+      "<10 pts": {
+        "swings": 26,
+        "median_cost_before": 0.4965,
+        "median_cost_after": 0.4306,
+        "median_minutes_to_settle": 4.5
+      },
+      "10-20 pts": {
+        "swings": 58,
+        "median_cost_before": 0.4648,
+        "median_cost_after": 0.4538,
+        "median_minutes_to_settle": 5.0
+      },
+      "20-30 pts": {
+        "swings": 25,
+        "median_cost_before": 0.4348,
+        "median_cost_after": 0.4799,
+        "median_minutes_to_settle": 7.0
+      },
+      "30+ pts": {
+        "swings": 7,
+        "median_cost_before": 0.4492,
+        "median_cost_after": 0.5182,
+        "median_minutes_to_settle": 10.0
+      }
+    },
+    "by_play_type": {
+      "touchdown": {
+        "swings": 60,
+        "median_cost_before": 0.4348,
+        "median_cost_after": 0.4648,
+        "median_abs_move": 15.0,
+        "median_minutes_to_settle": 5.0
+      },
+      "turnover": {
+        "swings": 29,
+        "median_cost_before": 0.4569,
+        "median_cost_after": 0.4538,
+        "median_abs_move": 14.0,
+        "median_minutes_to_settle": 5.0
+      },
+      "field_goal": {
+        "swings": 3,
+        "median_cost_before": 0.5508,
+        "median_cost_after": 0.4355,
+        "median_abs_move": 11.0,
+        "median_minutes_to_settle": 5.0
+      },
+      "failed_fourth": {
+        "swings": 7,
+        "median_cost_before": 0.4355,
+        "median_cost_after": 0.442,
+        "median_abs_move": 11.0,
+        "median_minutes_to_settle": 8.0
+      },
+      "no play within 3 min": {
+        "swings": 17
+      }
+    },
+    "paired_after_minus_before_cost_per_10": {
+      "median": -0.01,
+      "mean": 0.0426,
+      "n": 232
+    }
+  },
+  "2026": {
+    "swings_found": 131,
+    "swings_kept": 71,
+    "dropped_by_reason": {
+      "no steady before time within 20 min": 30,
+      "no steady after time within 20 min": 18,
+      "move reversed: settled change under half the threshold": 11,
+      "previous swing is after the before time": 1
+    },
+    "median_minutes_to_settle_kept": 5.0,
+    "minutes_to_settle_kept_p25_p75": [
+      4.0,
+      7.5
+    ],
+    "median_minutes_to_settle_all_with_after": 5.0,
+    "median_cost_per_10": {
+      "before": 0.4391,
+      "after": 0.4348
+    },
+    "median_spread_c": {
+      "before": 1.0,
+      "after": 1.0
+    },
+    "by_swing_size": {
+      "<10 pts": {
+        "swings": 14,
+        "median_cost_before": 0.4374,
+        "median_cost_after": 0.4339,
+        "median_minutes_to_settle": 4.5
+      },
+      "10-20 pts": {
+        "swings": 26,
+        "median_cost_before": 0.4306,
+        "median_cost_after": 0.4773,
+        "median_minutes_to_settle": 4.0
+      },
+      "20-30 pts": {
+        "swings": 22,
+        "median_cost_before": 0.4433,
+        "median_cost_after": 0.4339,
+        "median_minutes_to_settle": 5.5
+      },
+      "30+ pts": {
+        "swings": 9,
+        "median_cost_before": 0.4365,
+        "median_cost_after": 0.4306,
+        "median_minutes_to_settle": 6.0
+      }
+    },
+    "by_play_type": {
+      "touchdown": {
+        "swings": 41,
+        "median_cost_before": 0.4391,
+        "median_cost_after": 0.4348,
+        "median_abs_move": 20.0,
+        "median_minutes_to_settle": 4.0
+      },
+      "turnover": {
+        "swings": 10,
+        "median_cost_before": 0.431,
+        "median_cost_after": 0.4339,
+        "median_abs_move": 17.5,
+        "median_minutes_to_settle": 7.5
+      },
+      "field_goal": {
+        "swings": 0,
+        "median_cost_before": null,
+        "median_cost_after": null,
+        "median_abs_move": null,
+        "median_minutes_to_settle": null
+      },
+      "failed_fourth": {
+        "swings": 2,
+        "median_cost_before": 0.4406,
+        "median_cost_after": 0.4526,
+        "median_abs_move": 15.5,
+        "median_minutes_to_settle": 11.5
+      },
+      "no play within 3 min": {
+        "swings": 18
+      }
+    },
+    "paired_after_minus_before_cost_per_10": {
+      "median": 0.0188,
+      "mean": 0.032,
+      "n": 142
+    }
+  }
+}

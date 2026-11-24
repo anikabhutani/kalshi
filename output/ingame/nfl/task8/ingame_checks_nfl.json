@@ -1,0 +1,69 @@
+{
+  "every_swing_on_list_has_a_request": true,
+  "swing_times_without_request": 0,
+  "every_request_has_a_raw_file": true,
+  "credits": {
+    "calls_in_full_pull": 6675,
+    "credits_per_call": [
+      10
+    ],
+    "credits_used_full_pull": 66750,
+    "remaining_first_call": 99990.0,
+    "remaining_last_call": 33250.0,
+    "match": true,
+    "new_credits_for_this_list": 0,
+    "requests_on_list": 350
+  },
+  "each_event_matches_one_game": {
+    "swing_times_matched_to_exactly_one_event": 374,
+    "matched_to_two_or_more": 0,
+    "not_matched": 0
+  },
+  "both_teams_present_for_each_book": {
+    "book_times_with_one_team_missing": 0
+  },
+  "implied_sum_at_least_1": {
+    "lines": 748,
+    "below_1": 0
+  },
+  "shin_sums_to_1": {
+    "lines": 1496,
+    "max_abs_error": 2.220446049250313e-16
+  },
+  "book_snapshot_after_request": 0,
+  "kalshi_candle_after_request": 0,
+  "game_not_in_progress_rows": 0,
+  "kalshi_mid_outside_10_90_rows": 112,
+  "fee_recomputed_matches": {
+    "rows": 1496,
+    "mismatches": 0,
+    "tolerance_cents": 0.0001,
+    "note": "fee_calculator.py is not in the repo; recomputed with the Task 5 fee function (0.07 x n x P x (1-P), rounded up to the cent, n = 24)"
+  },
+  "duplicate_rows": 0,
+  "pairs_with_both_rows_usable": {
+    "pairs": 644,
+    "violations": 0
+  },
+  "identical_book_price_before_and_after": [
+    {
+      "book": "FanDuel",
+      "swings_with_both_times": 187,
+      "identical_home_odds_before_after": 0,
+      "share": 0.0,
+      "flag_possible_pregame_line": false
+    },
+    {
+      "book": "DraftKings",
+      "swings_with_both_times": 187,
+      "identical_home_odds_before_after": 0,
+      "share": 0.0,
+      "flag_possible_pregame_line": false
+    }
+  ],
+  "price_age_min_range": [
+    0.33,
+    4.4
+  ],
+  "book_last_update_age_sec_median": 163.5
+}
