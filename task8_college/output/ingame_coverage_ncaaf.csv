@@ -1,0 +1,31 @@
+step,count
+swings on the list,482
+swing times on the list (swing x before/after),964
+swing times covered by a request,964
+requests on the list (calls to make),848
+"requests with a raw file (calls made, HTTP 200)",848
+swing times with a raw file,964
+swing times with the event matched to exactly one game,964
+  ... matched by task5_crosswalk,684
+  ... matched by team_table,270
+  ... matched by cfbd_name,10
+FanDuel: swing times with the event matched,964
+FanDuel: ... and the book present (not missing_or_suspended),953
+FanDuel: ... and fresh (price_age_min <= 5),952
+FanDuel: ... and both teams priced,952
+FanDuel: ... and usable (all checks),874
+FanDuel: swings with a usable before-and-after pair (both teams),398
+DraftKings: swing times with the event matched,964
+DraftKings: ... and the book present (not missing_or_suspended),959
+DraftKings: ... and fresh (price_age_min <= 5),958
+DraftKings: ... and both teams priced,958
+DraftKings: ... and usable (all checks),880
+DraftKings: swings with a usable before-and-after pair (both teams),402
+reason_code DraftKings: kalshi_mid_outside_10_90 (rows),156
+reason_code DraftKings: missing_or_suspended (rows),10
+reason_code DraftKings: ok (rows),1760
+reason_code DraftKings: stale (rows),2
+reason_code FanDuel: kalshi_mid_outside_10_90 (rows),156
+reason_code FanDuel: missing_or_suspended (rows),22
+reason_code FanDuel: ok (rows),1748
+reason_code FanDuel: stale (rows),2

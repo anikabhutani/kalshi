@@ -1,0 +1,5 @@
+.env
+__pycache__/
+inputs/
+pull_run.log
+align_run.log

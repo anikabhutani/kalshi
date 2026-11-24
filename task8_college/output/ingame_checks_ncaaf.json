@@ -1,0 +1,134 @@
+{
+  "league": "ncaaf",
+  "every_swing_on_list_has_a_request": {
+    "pass": true,
+    "swings_on_list": 482,
+    "swing_times_on_list": 964,
+    "swing_times_with_request": 964
+  },
+  "every_request_has_a_raw_file": {
+    "pass": true,
+    "requests": 848,
+    "missing": []
+  },
+  "credits_used_match_calls_made": {
+    "calls_logged": 848,
+    "calls_http_200": 848,
+    "requests_on_list": 848,
+    "credits_per_call_seen": [
+      10
+    ],
+    "credits_used_by_pull": 8480,
+    "expected_10_x_calls": 8480,
+    "credits_remaining_first_call": 99990,
+    "credits_remaining_last_call": 91520,
+    "remaining_drop_equals_credits_charged_on_every_call": true,
+    "calls_where_remaining_dropped_by_a_different_amount": 0,
+    "match": true,
+    "budget": 18000
+  },
+  "each_event_matches_one_game": {
+    "pass": true,
+    "swing_times_matched_to_exactly_one_event": 964,
+    "swing_times_matched_to_two_or_more": 0,
+    "swing_times_not_matched": 0,
+    "events_assigned_to_more_than_one_game": 0,
+    "games_assigned_more_than_one_event": 0,
+    "api_duplicate_event_entries": {
+      "raw_files_with_duplicate_event_ids": 9,
+      "duplicated_event_ids": 106,
+      "duplicates_with_different_prices": 5,
+      "rule": "merged by event id; each book takes the copy with the latest market last_update"
+    },
+    "match_methods": {
+      "task5_crosswalk": 684,
+      "team_table": 270,
+      "cfbd_name": 10
+    }
+  },
+  "both_teams_present_for_each_book": {
+    "pass": true,
+    "book_rows_with_one_team_missing": 0
+  },
+  "implied_probabilities_sum_at_least_1": {
+    "pass": true,
+    "lines": 1912,
+    "below_1": 0,
+    "overround_median": 0.0602
+  },
+  "shin_fair_probabilities_sum_to_1": {
+    "pass": true,
+    "lines": 3824,
+    "unsolved": 0,
+    "max_abs_error": 2.220446049250313e-16
+  },
+  "snapshot_and_candle_never_after_request": {
+    "pass": true,
+    "book_snapshot_after_request_rows": 0,
+    "kalshi_candle_after_request_rows": 0
+  },
+  "game_in_progress_at_request": {
+    "pass": true,
+    "swing_times_not_in_progress": 0,
+    "source": "Task 7 games_ncaaf.csv kickoff_utc / final_whistle_utc"
+  },
+  "kalshi_midpoints_between_10_and_90": {
+    "pass": true,
+    "rule": "rows outside 10-90 get reason_code kalshi_mid_outside_10_90 and are not usable; pass = no usable row outside",
+    "rows_outside": 328,
+    "usable_rows_outside": 0
+  },
+  "fee_recomputed_matches_file": {
+    "pass": true,
+    "rows": 3856,
+    "mismatches": 0,
+    "compared_at": "4 decimals of a cent (the file's precision)",
+    "note": "fee_calculator.py is not in the repo (searched every branch and the local folders). Fee recomputed with the Task 7 / Task 5 fee function: 0.07 x n x P x (1-P) x multiplier, rounded up to the cent per order, n = n_med (2025: 50, 2026: 24), multiplier 1."
+  },
+  "no_duplicate_rows": {
+    "pass": true,
+    "duplicates": 0
+  },
+  "pairs_have_both_rows_usable": {
+    "pass": true,
+    "pairs": 1600,
+    "violations": 0
+  },
+  "identical_book_price_before_and_after": [
+    {
+      "book": "FanDuel",
+      "swings_with_prices_at_both_times": 474,
+      "identical_line_before_and_after": 3,
+      "share": 0.0063,
+      "flag_possible_pregame_line": false
+    },
+    {
+      "book": "DraftKings",
+      "swings_with_prices_at_both_times": 477,
+      "identical_line_before_and_after": 0,
+      "share": 0.0,
+      "flag_possible_pregame_line": false
+    }
+  ],
+  "after_snapshot_taken_before_swing_minute": {
+    "flag_only": true,
+    "usable_after_rows": 1724,
+    "usable_after_rows_flagged": 222,
+    "note": "the book's 'after' snapshot predates the swing minute t, so it is a pre-swing price although under 5 minutes old; kept usable (same rule as NFL), reported as a sensitivity row in the summary"
+  },
+  "price_age_min": {
+    "min": 0.233,
+    "median": 2.35,
+    "max": 5.4,
+    "rows_over_5": 4
+  },
+  "book_last_update_minutes_before_request": {
+    "median": 2.55,
+    "p90": 4.77,
+    "rows_over_5": 208
+  },
+  "kalshi_candle_minutes_before_request": {
+    "median": 0.0,
+    "p90": 0.0
+  }
+}

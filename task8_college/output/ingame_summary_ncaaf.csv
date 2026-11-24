@@ -1,0 +1,79 @@
+metric,book,which,group,estimate,ci_low,ci_high,unit,distinguishable_from_zero,rows,games,excluded_stale,excluded_missing_or_suspended,excluded_suspect
+extra_cost_A,FanDuel,before,all,11.55,8.47,13.442,cents per $10,True,888,276,2.0,10.0,64
+extra_cost_B,FanDuel,before,all,11.472,8.483,13.349,cents per $10,True,888,276,2.0,10.0,64
+book_cost_A,FanDuel,before,all,55.0,54.0,55.3,cents per $10,True,888,276,2.0,10.0,64
+book_cost_B,FanDuel,before,all,55.9,54.688,56.975,cents per $10,True,888,276,2.0,10.0,64
+kalshi_cost_B_vs_FanDuel_shin,Kalshi,before,all,41.783,38.991,45.222,cents per $10,True,888,276,2.0,10.0,64
+extra_cost_A,FanDuel,before,price_group=longshot,-5.8,-15.62,0.76,cents per $10,False,310,217,1.0,4.0,32
+extra_cost_A,FanDuel,before,price_group=middle,6.405,4.229,8.552,cents per $10,True,263,118,0.0,2.0,0
+extra_cost_A,FanDuel,before,price_group=favorite,24.867,20.902,28.987,cents per $10,True,315,218,1.0,4.0,32
+extra_cost_A,FanDuel,before,swing_size=small (<= 13.0 pts),12.328,8.634,16.493,cents per $10,True,274,98,2.0,8.0,42
+extra_cost_A,FanDuel,before,swing_size=medium (13.0-19.3 pts),11.45,6.313,14.633,cents per $10,True,308,128,0.0,0.0,8
+extra_cost_A,FanDuel,before,swing_size=large (> 19.3 pts),9.436,4.938,14.358,cents per $10,True,306,122,0.0,2.0,14
+share_missing_or_suspended,FanDuel,before,matched events,0.01,0.002,0.023,share of rows,True,964,295,2.0,10.0,64
+extra_cost_A,FanDuel,after,all,20.078,17.47,22.72,cents per $10,True,860,275,0.0,12.0,92
+extra_cost_B,FanDuel,after,all,20.242,17.51,22.41,cents per $10,True,860,275,0.0,12.0,92
+book_cost_A,FanDuel,after,all,55.763,55.152,56.768,cents per $10,True,860,275,0.0,12.0,92
+book_cost_B,FanDuel,after,all,57.522,57.413,57.522,cents per $10,True,860,275,0.0,12.0,92
+kalshi_cost_B_vs_FanDuel_shin,Kalshi,after,all,39.887,37.656,42.649,cents per $10,True,860,275,0.0,12.0,92
+extra_cost_A,FanDuel,after,price_group=longshot,4.7,-7.04,22.72,cents per $10,False,339,240,0.0,6.0,46
+extra_cost_A,FanDuel,after,price_group=middle,6.841,3.999,13.9,cents per $10,True,177,77,0.0,0.0,0
+extra_cost_A,FanDuel,after,price_group=favorite,26.674,22.214,30.07,cents per $10,True,344,243,0.0,6.0,46
+extra_cost_A,FanDuel,after,swing_size=small (<= 13.0 pts),19.106,14.933,23.179,cents per $10,True,288,103,0.0,10.0,28
+extra_cost_A,FanDuel,after,swing_size=medium (13.0-19.3 pts),18.554,14.792,23.11,cents per $10,True,298,124,0.0,0.0,18
+extra_cost_A,FanDuel,after,swing_size=large (> 19.3 pts),22.365,18.881,23.335,cents per $10,True,274,113,0.0,2.0,46
+share_missing_or_suspended,FanDuel,after,matched events,0.012,0.002,0.026,share of rows,True,964,295,0.0,12.0,92
+extra_cost_A,DraftKings,before,all,16.137,14.304,17.487,cents per $10,True,896,279,2.0,4.0,62
+extra_cost_B,DraftKings,before,all,15.825,14.35,17.452,cents per $10,True,896,279,2.0,4.0,62
+book_cost_A,DraftKings,before,all,56.805,55.0,58.406,cents per $10,True,896,279,2.0,4.0,62
+book_cost_B,DraftKings,before,all,63.107,62.051,63.492,cents per $10,True,896,279,2.0,4.0,62
+kalshi_cost_B_vs_DraftKings_shin,Kalshi,before,all,42.503,41.28,44.481,cents per $10,True,896,279,2.0,4.0,62
+extra_cost_A,DraftKings,before,price_group=longshot,7.96,-3.391,14.14,cents per $10,False,313,219,1.0,2.0,31
+extra_cost_A,DraftKings,before,price_group=middle,14.943,13.029,19.43,cents per $10,True,265,119,0.0,0.0,0
+extra_cost_A,DraftKings,before,price_group=favorite,19.851,17.336,25.339,cents per $10,True,318,220,1.0,2.0,31
+extra_cost_A,DraftKings,before,swing_size=small (<= 13.0 pts),14.675,13.138,17.722,cents per $10,True,280,100,2.0,0.0,44
+extra_cost_A,DraftKings,before,swing_size=medium (13.0-19.3 pts),16.387,13.519,18.762,cents per $10,True,308,128,0.0,0.0,8
+extra_cost_A,DraftKings,before,swing_size=large (> 19.3 pts),16.85,14.644,19.048,cents per $10,True,308,123,0.0,4.0,10
+share_missing_or_suspended,DraftKings,before,matched events,0.004,0.0,0.011,share of rows,False,964,295,2.0,4.0,62
+extra_cost_A,DraftKings,after,all,21.429,19.92,23.574,cents per $10,True,864,277,0.0,6.0,94
+extra_cost_B,DraftKings,after,all,21.538,20.047,23.754,cents per $10,True,864,277,0.0,6.0,94
+book_cost_A,DraftKings,after,all,58.502,56.372,59.688,cents per $10,True,864,277,0.0,6.0,94
+book_cost_B,DraftKings,after,all,63.83,63.265,65.217,cents per $10,True,864,277,0.0,6.0,94
+kalshi_cost_B_vs_DraftKings_shin,Kalshi,after,all,40.071,37.114,42.54,cents per $10,True,864,277,0.0,6.0,94
+extra_cost_A,DraftKings,after,price_group=longshot,27.96,14.41,41.09,cents per $10,True,341,242,0.0,3.0,47
+extra_cost_A,DraftKings,after,price_group=middle,16.98,11.03,20.726,cents per $10,True,177,77,0.0,0.0,0
+extra_cost_A,DraftKings,after,price_group=favorite,20.659,16.464,24.075,cents per $10,True,346,245,0.0,3.0,47
+extra_cost_A,DraftKings,after,swing_size=small (<= 13.0 pts),20.666,17.137,25.54,cents per $10,True,290,104,0.0,2.0,34
+extra_cost_A,DraftKings,after,swing_size=medium (13.0-19.3 pts),21.799,18.773,24.03,cents per $10,True,298,124,0.0,2.0,16
+extra_cost_A,DraftKings,after,swing_size=large (> 19.3 pts),21.595,19.21,24.075,cents per $10,True,276,114,0.0,2.0,44
+share_missing_or_suspended,DraftKings,after,matched events,0.006,0.0,0.015,share of rows,False,964,295,0.0,6.0,94
+kalshi_cost_A,Kalshi,before,all,46.15,44.52,47.735,cents per $10,True,896,279,2.0,10.0,64
+kalshi_cost_A,Kalshi,after,all,45.565,44.33,48.13,cents per $10,True,866,277,0.0,12.0,92
+share_kalshi_cheapest,all three,before,all,0.493,0.469,0.517,share of swing-team-times,True,888,276,4.0,14.0,126
+share_kalshi_cheapest,all three,before,price_group=longshot,0.342,0.29,0.396,share of swing-team-times,True,310,217,4.0,14.0,126
+share_kalshi_cheapest,all three,before,price_group=middle,0.471,0.427,0.517,share of swing-team-times,True,263,118,4.0,14.0,126
+share_kalshi_cheapest,all three,before,price_group=favorite,0.66,0.607,0.715,share of swing-team-times,True,315,218,4.0,14.0,126
+share_kalshi_cheapest,all three,after,all,0.526,0.505,0.547,share of swing-team-times,True,858,275,0.0,18.0,186
+share_kalshi_cheapest,all three,after,price_group=longshot,0.435,0.381,0.49,share of swing-team-times,True,338,240,0.0,18.0,186
+share_kalshi_cheapest,all three,after,price_group=middle,0.486,0.434,0.536,share of swing-team-times,True,177,77,0.0,18.0,186
+share_kalshi_cheapest,all three,after,price_group=favorite,0.636,0.581,0.686,share of swing-team-times,True,343,243,0.0,18.0,186
+reprice_gap_abs,FanDuel,after-before,all,2.127,1.85,2.425,points of win probability,True,398,257,2.0,22.0,156
+reprice_gap_signed,FanDuel,after-before,all,0.26,-0.234,0.504,points (book change - Kalshi change),False,398,257,2.0,22.0,156
+kalshi_mid_move_abs,FanDuel,after-before,same pairs,16.75,15.5,17.256,points,True,398,257,2.0,22.0,156
+reprice_gap_abs,DraftKings,after-before,all,1.969,1.788,2.264,points of win probability,True,402,260,2.0,10.0,156
+reprice_gap_signed,DraftKings,after-before,all,0.14,-0.052,0.518,points (book change - Kalshi change),False,402,260,2.0,10.0,156
+kalshi_mid_move_abs,DraftKings,after-before,same pairs,16.75,15.5,17.0,points,True,402,260,2.0,10.0,156
+extra_cost_A_after_minus_before,FanDuel,after-before,pairs,6.827,3.76,8.77,cents per $10,True,796,257,2.0,22.0,156
+extra_cost_A_after_minus_before,DraftKings,after-before,pairs,2.464,-0.142,5.792,cents per $10,False,804,260,2.0,10.0,156
+extra_cost_A,FanDuel,after,sensitivity: book snapshot at or after swing minute,20.078,17.302,22.75,cents per $10,True,750,254,0.0,12.0,202
+reprice_gap_abs,FanDuel,after-before,sensitivity: book snapshot at or after swing minute,1.902,1.731,2.277,points of win probability,True,347,239,2.0,22.0,156
+extra_cost_A,DraftKings,after,sensitivity: book snapshot at or after swing minute,21.708,19.9,23.612,cents per $10,True,752,256,0.0,6.0,206
+reprice_gap_abs,DraftKings,after-before,sensitivity: book snapshot at or after swing minute,1.885,1.644,2.135,points of win probability,True,350,242,2.0,10.0,156
+pregame_extra_cost_A_kickoff,FanDuel,pregame kickoff (Task 5),all,8.077,6.751,8.673,cents per $10,True,2112,1056,,,468
+pregame_extra_cost_A_kickoff,FanDuel,pregame kickoff (Task 5),price_group=longshot,23.397,19.915,25.667,cents per $10,True,837,837,,,468
+pregame_extra_cost_A_kickoff,FanDuel,pregame kickoff (Task 5),price_group=middle,-1.151,-2.416,-0.229,cents per $10,True,438,219,,,468
+pregame_extra_cost_A_kickoff,FanDuel,pregame kickoff (Task 5),price_group=favorite,6.259,4.717,8.332,cents per $10,True,837,837,,,468
+pregame_extra_cost_A_kickoff,DraftKings,pregame kickoff (Task 5),all,6.572,4.844,7.145,cents per $10,True,2130,1065,,,450
+pregame_extra_cost_A_kickoff,DraftKings,pregame kickoff (Task 5),price_group=longshot,24.31,18.301,26.751,cents per $10,True,843,843,,,450
+pregame_extra_cost_A_kickoff,DraftKings,pregame kickoff (Task 5),price_group=middle,-1.638,-3.127,-0.695,cents per $10,True,444,222,,,450
+pregame_extra_cost_A_kickoff,DraftKings,pregame kickoff (Task 5),price_group=favorite,5.956,3.508,6.894,cents per $10,True,843,843,,,450
