@@ -1,0 +1,4 @@
+threshold,k,swings_found,swings_kept,catch_rate_3min,match_rate_3min,old_run_found,old_run_kept,diff_found,diff_kept
+p97.5,3.373,799,417,0.2483,0.7316,792,414,7,3
+p99,4.721,412,187,0.1321,0.7431,405,183,7,4
+p99.5,6.204,247,101,0.0687,0.6891,240,96,7,5

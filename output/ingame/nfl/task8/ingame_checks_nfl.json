@@ -61,6 +61,16 @@
       "flag_possible_pregame_line": false
     }
   ],
+  "after_rows_book_not_repriced_since_swing": {
+    "FanDuel": {
+      "usable_after_rows": 338,
+      "book_last_update_before_swing": 52
+    },
+    "DraftKings": {
+      "usable_after_rows": 338,
+      "book_last_update_before_swing": 62
+    }
+  },
   "price_age_min_range": [
     0.33,
     4.4

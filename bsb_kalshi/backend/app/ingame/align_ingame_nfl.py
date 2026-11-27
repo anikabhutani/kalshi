@@ -190,6 +190,7 @@ def build(inp: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, An
         base = {"game_id": x["game_id"], "season": int(x["season"]), "week": x["week"], "swing_id": x["swing_id"],
                 "which": x["which"], "request_time_utc": x["request_time_utc"], "raw_file": f.name,
                 "abs_move": x["abs_move"], "matched_play": x["matched_play"], "kickoff_utc": g["kickoff_utc"],
+                "swing_t_utc": iso(int(x["t_ts"])),
                 "final_whistle_utc": g["final_whistle_utc"],
                 "game_in_progress": kick <= x["request_ts"] <= final}
         ev_log.append({"swing_id": x["swing_id"], "which": x["which"], "raw_file": f.name, "has_raw": bool(d),
@@ -252,6 +253,12 @@ def build(inp: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, An
     a["kalshi_cost_ruler_B"] = 10 * (1 - a["shin_fair_p"] / paid_k)
     a["extra_cost_A"] = a["cost_ruler_A"] - a["kalshi_cost_ruler_A"]
     a["extra_cost_B"] = a["cost_ruler_B"] - a["kalshi_cost_ruler_B"]
+    # robustness flag (not part of the brief's usable rule): an after-swing book price last updated before the
+    # swing minute had not repriced yet, so it compares Kalshi's new price with the book's old one
+    lu = a["book_last_update"].map(lambda v: unix(v) if isinstance(v, str) else None)
+    tt = a["swing_t_utc"].map(unix)
+    a["book_repriced_since_swing"] = [None if w == "before" else (bool(u >= t) if u is not None else None)
+                                      for w, u, t in zip(a["which"], lu, tt)]
     # pair usability: swing x book x team usable at both times
     ok = a[a["usable"]].groupby(["swing_id", "book", "team"])["which"].nunique()
     pair_ok = set(ok[ok == 2].index)
@@ -368,32 +375,61 @@ def summaries(a: pd.DataFrame) -> pd.DataFrame:
     for s in (2025, 2026):
         c = pd.read_csv(REPO_ROOT / "data" / "alignment" / str(s) / "costs.csv", low_memory=False)
         c = c[(c["ruler"] == "A_Kalshi") & (c["checkpoint"] == "close")]
-        k = c[(c["venue"] == "Kalshi") & (c["n_label"] == "median")][["game_id", "team", "cost_per_10", "usable", "fair"]].rename(
-            columns={"cost_per_10": "k_cost", "usable": "k_ok"})
+        k = c[(c["venue"] == "Kalshi") & (c["n_label"] == "median")][["game_id", "team", "cost_per_10", "usable", "fair",
+                                                                          "unusable_reason"]].rename(
+            columns={"cost_per_10": "k_cost", "usable": "k_ok", "unusable_reason": "k_reason"})
         for name in BOOKS.values():
-            b = c[c["venue"] == name][["game_id", "team", "cost_per_10", "usable"]].drop_duplicates(["game_id", "team"]) \
-                .merge(k, on=["game_id", "team"])
+            b = c[c["venue"] == name][["game_id", "team", "cost_per_10", "usable", "unusable_reason"]] \
+                .drop_duplicates(["game_id", "team"]).merge(k, on=["game_id", "team"])
             b["book"] = name
             b["extra"] = b["cost_per_10"] - b["k_cost"]
             b["ok"] = b["usable"] & b["k_ok"]
+            why = b["unusable_reason"].fillna(b["k_reason"]).fillna("").astype(str)
+            b["excl"] = np.where(b["ok"], "", np.where(why.str.contains("old"), "stale",
+                                 np.where(why.str.contains("missing|no ", case=False), "missing", "suspect")))
             pre.append(b)
     pre = pd.concat(pre)
+    pre["group"] = np.select([pre["fair"] < 0.4, pre["fair"] < 0.6], ["longshot", "middle"], "favorite")
     for name in BOOKS.values():
-        x = pre[(pre["book"] == name) & pre["ok"]]
-        e, lo, hi = boot(x, "extra")
-        out.append({"metric": "pregame_extra_cost_A_kickoff", "book": name, "which": "pregame kickoff", "group": "all",
-                    "estimate": round(e * 100, 3), "ci_low": round(lo * 100, 3), "ci_high": round(hi * 100, 3),
-                    "unit": "cents per $10", "distinguishable_from_zero": bool(lo > 0 or hi < 0), "rows": int(len(x)),
-                    "games": int(x["game_id"].nunique()),
-                    "excluded_suspect": int((~pre.loc[pre["book"] == name, "ok"]).sum())})
-        for grp, (lo_, hi_) in (("longshot", (0, 0.4)), ("middle", (0.4, 0.6)), ("favorite", (0.6, 1.01))):
-            y = x[(x["fair"] >= lo_) & (x["fair"] < hi_)]
-            e, l2, h2 = boot(y, "extra")
+        pb = pre[pre["book"] == name]
+        for grp in ("all", "longshot", "middle", "favorite"):
+            al = pb if grp == "all" else pb[pb["group"] == grp]
+            x = al[al["ok"]]
+            e, lo, hi = boot(x, "extra")
             out.append({"metric": "pregame_extra_cost_A_kickoff", "book": name, "which": "pregame kickoff",
-                        "group": f"price_group={grp}", "estimate": round(e * 100, 3), "ci_low": round(l2 * 100, 3),
-                        "ci_high": round(h2 * 100, 3), "unit": "cents per $10",
-                        "distinguishable_from_zero": bool(l2 > 0 or h2 < 0), "rows": int(len(y)),
-                        "games": int(y["game_id"].nunique())})
+                        "group": "all" if grp == "all" else f"price_group={grp}", "estimate": round(e * 100, 3),
+                        "ci_low": round(lo * 100, 3), "ci_high": round(hi * 100, 3), "unit": "cents per $10",
+                        "distinguishable_from_zero": bool(lo > 0 or hi < 0), "rows": int(len(x)),
+                        "games": int(x["game_id"].nunique()), "excluded_stale": int((al["excl"] == "stale").sum()),
+                        "excluded_missing_or_suspended": int((al["excl"] == "missing").sum()),
+                        "excluded_suspect": int((al["excl"] == "suspect").sum())})
+    # robustness: after-swing rows whose book price was updated after the swing
+    for name in BOOKS.values():
+        al_b = a[(a["book"] == name) & (a["which"] == "after")]
+        for grp in ("all", "longshot", "middle", "favorite"):
+            al = al_b if grp == "all" else al_b[al_b["price_group"] == grp]
+            x = al[al["usable"] & (al["book_repriced_since_swing"] == True)]  # noqa: E712
+            r = srow("extra_cost_A_after_book_repriced_only", name, "after",
+                     "all" if grp == "all" else f"price_group={grp}", *boot(x, "extra_cost_A"), x, al)
+            r["excluded_not_repriced"] = int((al["usable"] & (al["book_repriced_since_swing"] == False)).sum())  # noqa: E712
+            out.append(r)
+        rp = a[(a["book"] == name) & a["pair_usable"]]
+        bad = set(rp.loc[(rp["which"] == "after") & (rp["book_repriced_since_swing"] == False), "swing_id"])  # noqa: E712
+        x = rp[~rp["swing_id"].isin(bad)].pivot_table(index=["game_id", "swing_id", "team"], columns="which",
+                                                      values="extra_cost_A").dropna()
+        x = (x["after"] - x["before"]).rename("chg").reset_index()
+        r = srow("extra_cost_A_after_minus_before_repriced_pairs", name, "after-before", "pairs", *boot(x, "chg"), x,
+                 a[a["book"] == name])
+        r["excluded_not_repriced"] = int(len(bad))
+        out.append(r)
+    # 2. pooled before + after (one number per book and price group; used by the savings table)
+    for name in BOOKS.values():
+        al_b = a[a["book"] == name]
+        for grp in ("all", "longshot", "middle", "favorite"):
+            al = al_b if grp == "all" else al_b[al_b["price_group"] == grp]
+            x = al[al["usable"]]
+            out.append(srow("extra_cost_A_pooled_before_after", name, "before+after",
+                            "all" if grp == "all" else f"price_group={grp}", *boot(x, "extra_cost_A"), x, al))
     return pd.DataFrame(out)
 
 
@@ -476,6 +512,11 @@ def checks(a: pd.DataFrame, ev: pd.DataFrame, sw: pd.DataFrame, lst: pd.DataFram
         "duplicate_rows": int(a.duplicated(["swing_id", "which", "team", "book"]).sum()),
         "pairs_with_both_rows_usable": {"pairs": int(len(pair_bad)), "violations": int((~pair_bad).sum())},
         "identical_book_price_before_and_after": ident,
+        "after_rows_book_not_repriced_since_swing": {
+            b: {"usable_after_rows": int((a["usable"] & (a["which"] == "after") & (a["book"] == b)).sum()),
+                "book_last_update_before_swing": int((a["usable"] & (a["which"] == "after") & (a["book"] == b)
+                                                      & (a["book_repriced_since_swing"] == False)).sum())}  # noqa: E712
+            for b in BOOKS.values()},
         "price_age_min_range": [round(float(a["price_age_min"].min()), 2), round(float(a["price_age_min"].max()), 2)],
         "book_last_update_age_sec_median": float((a["request_time_utc"].map(unix)
                                                   - a["book_last_update"].map(unix)).median()),
@@ -530,7 +571,8 @@ def align() -> int:
             "kalshi_bid", "kalshi_ask", "kalshi_mid", "kalshi_spread", "kalshi_fee", "kalshi_cost_per10", "book",
             "odds_api_event_id", "book_snapshot_time", "book_last_update", "price_age_min", "odds", "implied_p",
             "overround", "shin_fair_p", "price_group", "cost_ruler_A", "cost_ruler_B", "kalshi_cost_ruler_A",
-            "kalshi_cost_ruler_B", "extra_cost_A", "extra_cost_B", "usable", "reason_code", "pair_usable", "abs_move",
+            "kalshi_cost_ruler_B", "extra_cost_A", "extra_cost_B", "usable", "reason_code", "pair_usable",
+            "swing_t_utc", "book_repriced_since_swing", "abs_move",
             "matched_play", "raw_file"]
     out = a[cols].sort_values(["request_time_utc", "swing_id", "which", "book", "side"])
     num = out.select_dtypes("float").columns
